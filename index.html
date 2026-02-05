@@ -5,72 +5,228 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Darasgah Result Portal</title>
 <style>
-body{font-family:Arial,sans-serif;padding:20px;background:#f5f5f5;text-align:center;}
-.container{max-width:500px;margin:auto;background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
-h2{color:#2e6da4;}
-select,input,button{padding:10px;margin:10px 0;width:95%;border:1px solid #ccc;border-radius:5px;display:block;margin-left:auto;margin-right:auto;}
-button{background:#2e6da4;color:white;cursor:pointer;font-weight:bold;border:none;}
-#output{margin-top:20px;text-align:left;}
-table{width:100%;border-collapse:collapse;margin-top:10px;}
-th,td{border:1px solid #ccc;padding:8px;text-align:center;}
-th{background:#2e6da4;color:white;}
-.pass{color:green;font-weight:bold;}
-.fail{color:red;font-weight:bold;}
+    body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; background: #f0f4f8; text-align: center; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    h2 { color: #2e6da4; margin-bottom: 20px; border-bottom: 2px solid #2e6da4; pb: 10px; }
+    label { display: block; text-align: left; margin: 10px 0 5px; font-weight: bold; color: #444; }
+    select, input, button { padding: 12px; margin-bottom: 10px; width: 100%; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+    button { background: #2e6da4; color: white; cursor: pointer; font-weight: bold; border: none; font-size: 16px; transition: 0.3s; }
+    button:hover { background: #1a4a73; }
+    #output { margin-top: 30px; text-align: left; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+    th { background: #2e6da4; color: white; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    .pass { color: green; font-weight: bold; }
+    .fail { color: red; font-weight: bold; }
+    .student-info { background: #e7f3ff; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 5px solid #2e6da4; }
 </style>
 </head>
 <body>
 
 <div class="container">
     <h2>Darasgah Result Portal</h2>
-    <p>Check Your Result</p>
     
+    <label>Class:</label>
     <select id="classSelect">
-      <option value="">Select Class</option>
-      <option>1st</option><option>2nd</option><option>3rd</option>
-      <option>4th</option><option>5th</option><option>6th</option>
-      <option>7th</option><option>8th</option><option>10th</option>
+      <option value="">-- Select Class --</option>
+      <option value="1st">1st</option>
+      <option value="2nd">2nd</option>
+      <option value="3rd">3rd</option>
+      <option value="4th">4th</option>
+      <option value="5th">5th</option>
+      <option value="6th">6th</option>
+      <option value="7th">7th</option>
+      <option value="8th">8th</option>
+      <option value="10th">10th</option>
     </select>
 
-    <input type="text" id="studentName" placeholder="Student Name">
-    <input type="text" id="parentName" placeholder="Parent Name">
-    <button onclick="findResult()">Search Result</button>
+    <label>Student Name:</label>
+    <input type="text" id="studentName" placeholder="Enter Student Name">
+
+    <label>Parent Name:</label>
+    <input type="text" id="parentName" placeholder="Enter Parent Name">
+
+    <button onclick="findResult()">Get Result</button>
 
     <div id="output"></div>
 </div>
 
 <script>
 function normalize(str){
-  return str ? str.toLowerCase().replace(/[^a-z]/g,"").trim() : "";
+  return str ? str.toLowerCase().replace(/[\.\-\s]/g,"").trim() : "";
 }
 
 const results = [
-    {c:"1st", n:"Aisha Shabir", p:"Shabir Ah Mir", sub:["Nazirah","Seerat"], marks:[50,50], maxTotal:100},
-    {c:"1st", n:"Anam-ul-Haq", p:"Fayaz Ah Gojree", sub:["Nazirah","Seerat"], marks:[35,50], maxTotal:100},
-    {c:"4th", n:"Aijaz Ah Mir", p:"Showket Ah Mir", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[34,48,48,47], maxTotal:200}
+// ===== 1st Class =====
+{c:"1st",n:"Aisha Shabir",p:"Shabir Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[50,50],maxTotal:100},
+{c:"1st",n:"Anam-ul-Haq",p:"Fayaz Ah Gojree",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[35,50],maxTotal:100},
+{c:"1st",n:"Irfan Arif",p:"M. Arif Khan",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[20,49],maxTotal:100},
+{c:"1st",n:"Farhan Rasheed",p:"Ab Rasheed Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[49,35],maxTotal:100},
+{c:"1st",n:"Iram Mukhtiyar",p:"Mukhtiyar Ah Khan",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[32,48],maxTotal:100},
+{c:"1st",n:"Afan Ashraf",p:"M. Ashraf Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[47,28],maxTotal:100},
+{c:"1st",n:"Ab Wajid Bhat",p:"Towseef Ah Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[12,45],maxTotal:100},
+{c:"1st",n:"Usman Aijaz",p:"Aijaz Ah Khan",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[40,43],maxTotal:100},
+{c:"1st",n:"Kulsama Irshad",p:"Irshad Ah Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[39,45],maxTotal:100},
+{c:"1st",n:"Ayan Masood",p:"Masood Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[24,43],maxTotal:100},
+{c:"1st",n:"Mahnoor Qayoom",p:"Ab Qayoom Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[43,33],maxTotal:100},
+{c:"1st",n:"Zulkarnain Fayaz",p:"Fayaz Ah Lone",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[41,35],maxTotal:100},
+{c:"1st",n:"Hazim Ishfaq",p:"Ishfaq Ah Peer",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[42,40],maxTotal:100},
+{c:"1st",n:"Muntazir Tahir",p:"Tahir Manzoor Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[40,35],maxTotal:100},
+{c:"1st",n:"Ahmad Khawaja",p:"Naseer Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[39,34],maxTotal:100},
+{c:"1st",n:"Naveed Naseer",p:"Naseer Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[30,29],maxTotal:100},
+{c:"1st",n:"Abrar Jahangir",p:"Jahangir Ah Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[35,28],maxTotal:100},
+{c:"1st",n:"Zayan Masood",p:"Masood Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[33,30],maxTotal:100},
+{c:"1st",n:"Haidar Bilal",p:"Bilal Al Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[9,33],maxTotal:100},
+{c:"1st",n:"Ab Wahid",p:"Towseef Al Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[29,25],maxTotal:100},
+{c:"1st",n:"Muneeb Khawaja",p:"Javaid Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[38,35],maxTotal:100},
+{c:"1st",n:"Azim Jameel",p:"Jameel Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[17,33],maxTotal:100},
+{c:"1st",n:"Aman Sultan",p:"M. Sultan Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[21,28],maxTotal:100},
+{c:"1st",n:"Zehran Shafi",p:"M. Shafi Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[34,32],maxTotal:100},
+{c:"1st",n:"Rutba Naseer",p:"Naseer Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[37,16],maxTotal:100},
+{c:"1st",n:"Sabat Sultan",p:"M. Sultan Malik",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[31,28],maxTotal:100},
+{c:"1st",n:"Musadiq Iqbal",p:"M. Iqbal Ganaie",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[0,15],maxTotal:100},
+{c:"1st",n:"Mudasir Ah Bhat",p:"Gh. Mohd Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[23,18],maxTotal:100},
+
+// ===== 2nd Class =====
+{c:"2nd",n:"Hashim Naseer",p:"Naseer Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[48,48],maxTotal:100},
+{c:"2nd",n:"Hyder Naseer",p:"Naseer Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[46,48],maxTotal:100},
+{c:"2nd",n:"Ayan Tariq",p:"Tariq Ah Lone",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[47,42],maxTotal:100},
+{c:"2nd",n:"Muskan Jan",p:"Ab. Rashid Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[48,40],maxTotal:100},
+{c:"2nd",n:"Seerat Shabir",p:"Shabir Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[43,45],maxTotal:100},
+{c:"2nd",n:"Abdullah Owais",p:"Owais Akbar Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[43,45],maxTotal:100},
+{c:"2nd",n:"Ayan Bilal Mir",p:"Bilal Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[48,38],maxTotal:100},
+{c:"2nd",n:"Muntazir Shafi",p:"M. Shafi Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[47,38],maxTotal:100},
+{c:"2nd",n:"Ufan Jameel",p:"Jameel Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[45,40],maxTotal:100},
+{c:"2nd",n:"Muzamil Akbar",p:"M. Akbar Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[49,35],maxTotal:100},
+{c:"2nd",n:"M. Amad Mir",p:"Gh. Mohd. Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[48,35],maxTotal:100},
+{c:"2nd",n:"Moeen-ul-Islam Feroz",p:"Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[47,36],maxTotal:100},
+{c:"2nd",n:"Afan Javaid",p:"Javaid Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[48,34],maxTotal:100},
+{c:"2nd",n:"Iram Zahoor",p:"Zahoor Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[43,38],maxTotal:100},
+{c:"2nd",n:"Atif Ah Shah",p:"Tahir Ah Shah",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[46,33],maxTotal:100},
+{c:"2nd",n:"Ab Hanan Mir",p:"M. Ashraf Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[44,35],maxTotal:100},
+{c:"2nd",n:"Abroo Jan",p:"Khurshid Ah Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[43,35],maxTotal:100},
+{c:"2nd",n:"Momin Tahir",p:"Tahir Manzoor Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[39,38],maxTotal:100},
+{c:"2nd",n:"Tazeem-ul-Haq",p:"M. Ashraf Malik",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[40,37],maxTotal:100},
+{c:"2nd",n:"Sikandar Sultan",p:"M. Sultan Malik",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[46,30],maxTotal:100},
+{c:"2nd",n:"Anzar Tahir",p:"Tahir Ah Shah",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[41,35],maxTotal:100},
+{c:"2nd",n:"Masrat Shafi",p:"M. Shafi Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[36,33],maxTotal:100},
+{c:"2nd",n:"Rabiya Naseer",p:"Naseer Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[38,30],maxTotal:100},
+{c:"2nd",n:"Adeeba Khurshid",p:"Khurshid Ah Shaikh",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[32,35],maxTotal:100},
+{c:"2nd",n:"Ayan Majeed",p:"Ab Majeed Lone",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[33,15],maxTotal:100},
+
+// ===== 3rd Class =====
+{c:"3rd", n:"Ahtisham-ul-Haq", p:"Fayaz Ah Gojree", sub:["Nazirah","Seerat","Mubadiyat"], marks:[36,50,-1], maxTotal:100},
+{c:"3rd", n:"Fatima Feroz", p:"Feroz Ah Bhat", sub:["Nazirah","Seerat","Mubadiyat"], marks:[37,48,0], maxTotal:100},
+{c:"3rd", n:"Sabeena Jan", p:"M. Akbar Mir", sub:["Nazirah","Seerat","Mubadiyat"], marks:[45,40,0], maxTotal:100},
+{c:"3rd", n:"Faiq-ul-Islam", p:"Parvaiz Ah Bhat", sub:["Nazirah","Seerat","Mubadiyat"], marks:[36,49,0], maxTotal:100},
+{c:"3rd", n:"Mehwish Tahir", p:"Tahir Manzoor Khawaja", sub:["Nazirah","Seerat","Mubadiyat"], marks:[38,44,0], maxTotal:100},
+{c:"3rd", n:"Inam-ul-Haq", p:"Aijaz Ah Mir", sub:["Nazirah","Seerat","Mubadiyat"], marks:[36,46,0], maxTotal:100},
+{c:"3rd", n:"Mohsin Mukhtar", p:"Mukhtar Ah Khan", sub:["Nazirah","Seerat","Mubadiyat"], marks:[31,47,0], maxTotal:100},
+{c:"3rd", n:"Aabish Basharat", p:"Basharat Ah Hajam", sub:["Nazirah","Seerat","Mubadiyat"], marks:[34,44,0], maxTotal:100},
+{c:"3rd", n:"Madiyah Majeed", p:"Ab Majeed Mir", sub:["Nazirah","Seerat","Mubadiyat"], marks:[35,34,0], maxTotal:100},
+{c:"3rd", n:"Azfar Rasheed", p:"Ab Rasheed Mir", sub:["Nazirah","Seerat","Mubadiyat"], marks:[28,39,0], maxTotal:100},
+{c:"3rd", n:"Shazaib Javaid", p:"Javaid Ah Shaikh", sub:["Nazirah","Seerat","Mubadiyat"], marks:[26,40,0], maxTotal:100},
+{c:"3rd", n:"Zahir Parvaiz", p:"Parvaiz Ah Khan", sub:["Nazirah","Seerat","Mubadiyat"], marks:[28,38,0], maxTotal:100},
+{c:"3rd", n:"Dawar Fayaz", p:"Fayaz Ah Lone", sub:["Nazirah","Seerat","Mubadiyat"], marks:[29,36,0], maxTotal:100},
+{c:"3rd", n:"Aban-ul-Haq", p:"Javaid Ah Bhat", sub:["Nazirah","Seerat","Mubadiyat"], marks:[31,31,0], maxTotal:100},
+{c:"3rd", n:"Basiya Zahoor", p:"Zahoor Ah Mir", sub:["Nazirah","Seerat","Mubadiyat"], marks:[42,40,0], maxTotal:100},
+{c:"3rd", n:"Zainab Arif", p:"M. Arif Khan", sub:["Nazirah","Seerat","Mubadiyat"], marks:[36,41,0], maxTotal:100},
+{c:"3rd", n:"Saqib Shareef", p:"Shareef Din War", sub:["Nazirah","Seerat","Mubadiyat"], marks:[35,34,0], maxTotal:100},
+{c:"3rd", n:"Murtaza Rasheed", p:"Ab Rasheed Malik", sub:["Nazirah","Seerat","Mubadiyat"], marks:[23,22,0], maxTotal:100},
+
+// ===== 4th Class =====
+{c:"4th", n:"Aijaz Ah Mir", p:"Showket Ah Mir", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[34,48,48,47], maxTotal:200},
+{c:"4th", n:"Numa Khurshid", p:"Khurshid Ah Bhat", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[39,47,46,42], maxTotal:200},
+{c:"4th", n:"Tabinda Parvaiz", p:"Parvaiz Ah Bhat", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[39,50,46,35], maxTotal:200},
+{c:"4th", n:"Irtifa Ashiq", p:"Ashiq Hussain Bhat", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[33,50,44,43], maxTotal:200},
+{c:"4th", n:"Imran Irshad", p:"Irshad Ah Bhat", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[37,50,48,28], maxTotal:200},
+{c:"4th", n:"Umeed Basharat", p:"Bashir Ah Hajam", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[42,39,44,38], maxTotal:200},
+{c:"4th", n:"Hazim Majeed", p:"Ab Majeed Lone", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[34,23,42,50], maxTotal:200},
+{c:"4th", n:"Nelofar Shafi", p:"M. Shafi Bhat", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[35,42,27,44], maxTotal:200},
+{c:"4th", n:"Nazima Irshad", p:"Irshad Ah Sheikh", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[31,37,46,31], maxTotal:200},
+{c:"4th", n:"Shahid Rayees", p:"Rayees Ah Lone", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[21,23,44,33], maxTotal:200},
+{c:"4th", n:"Huzaif Nabi", p:"Gh Nabi Mir", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[30,20,38,30], maxTotal:200},
+{c:"4th", n:"Burhan Rasheed", p:"Ab Rasheed Mir", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[29,24,23,39], maxTotal:200},
+{c:"4th", n:"Nadiya Mushtaq", p:"Mushtaq Ah Mir", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[24,10,34,30], maxTotal:200},
+{c:"4th", n:"Muneeb Rasool", p:"Gh Rasool War", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[23,18,38,9], maxTotal:200},
+{c:"4th", n:"Rahil Rasheed", p:"Ab Rasheed Malik", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[38,24,25,18], maxTotal:200},
+
+// ===== 5th Class =====
+{c:"5th", n:"Moeen ul Islam", p:"M. Shafi Malik", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[20,32,17,15,0], maxTotal:250},
+{c:"5th", n:"Aamir Akbar", p:"M. Akbar Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[33,30,29,21,0], maxTotal:250},
+{c:"5th", n:"Usman Jameel", p:"Jameel Ah Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[26,32,30,17,0], maxTotal:250},
+{c:"5th", n:"Khawaja Sohail", p:"M. Sultan Khawaja", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[40,44,24,10,0], maxTotal:250},
+{c:"5th", n:"Adnan Mushtaq", p:"Mushtaq Ah War", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[37,32,23,13,0], maxTotal:250},
+{c:"5th", n:"Muqadas Majeed", p:"Ab. Majeed Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[35,34,20,6,0], maxTotal:250},
+{c:"5th", n:"Zeeshan Faiyaz", p:"Faiyaz Ah. Shaikh", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[13,22,16,21,0], maxTotal:250},
+{c:"5th", n:"Kashiful Haq", p:"Javid Ah. Bhat", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[23,26,14,9,0], maxTotal:250},
+{c:"5th", n:"Suhaib Shahzad", p:"Shahzad Ah. Lone", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[38,40,25,14,0], maxTotal:250},
+{c:"5th", n:"Najmus Sehr", p:"Faiyaz Ah. Malik", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[42,44,48,40,0], maxTotal:250},
+{c:"5th", n:"Tajamul Islam", p:"Faiyaz Ah. Malik", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[43,36,46,37,0], maxTotal:250},
+{c:"5th", n:"Sadiya Jan", p:"Javid Ah. Bhat", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[27,28,19,15,0], maxTotal:250},
+{c:"5th", n:"Sufiya Shabir", p:"Shabir Ah. Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[33,38,36,29,0], maxTotal:250},
+{c:"5th", n:"Sabia Shabir", p:"Shabir Ah. Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[46,40,41,32,0], maxTotal:250},
+{c:"5th", n:"Mohsin Manzoor", p:"Manzoor Ah. Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[16,30,14,16,0], maxTotal:250},
+{c:"5th", n:"Imran Farooq", p:"Farooq Ah. Sheikh", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[37,30,21,10,0], maxTotal:250},
+{c:"5th", n:"Rahil Faiyaz", p:"Faiyaz Ah. Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[0,14,0,4,0], maxTotal:250},
+{c:"5th", n:"Faizan Manzoor", p:"Manzoor Ah. Bhat", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[40,34,24,25,0], maxTotal:250},
+{c:"5th", n:"Ayman Arif", p:"Aarif Hussain Khan", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[41,48,45,48,0], maxTotal:250},
+{c:"5th", n:"Uzair Bilal", p:"Bilal Ah. Bhat", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[38,34,20,15,0], maxTotal:250},
+
+// ===== 6th Class =====
+{c:"6th", n:"Arhan Shafi Khawaja", p:"M. Shafi Khawaja", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[28,11,18,17,5], maxTotal:250},
+{c:"6th", n:"Moeen-ul-Islam Bashir", p:"Ah. Khawaja", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[40,35,34,12,13], maxTotal:250},
+{c:"6th", n:"Naushad Alam", p:"M. Sultan Khawaja", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[29,6,18,2,4], maxTotal:250},
+{c:"6th", n:"Amir Manzoor", p:"Manzoor Ah. Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[4,4,18,5,9], maxTotal:250},
+{c:"6th", n:"Tazeem Bashir Mir", p:"Bashir Ah. Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[38,12,16,10,4], maxTotal:250},
+{c:"6th", n:"Saifullah Mir", p:"Bashir Ah. Mir", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[44,14,23,23,15], maxTotal:250},
+{c:"6th", n:"Shahzad Parvaiz", p:"Parvaiz Ah. Bhat", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[32,44,34,41,30], maxTotal:250},
+{c:"6th", n:"Shahzab Shabir", p:"Shabir Ah. Para", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[37,40,32,35,18], maxTotal:250},
+{c:"6th", n:"Tabasum Nazir", p:"Nazir Ah Sheikh", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[41,44,24,28,13], maxTotal:250},
+{c:"6th", n:"Tahmuna Feroz", p:"Feroz Ah Lone", sub:["Nazirah","Seerat","Mubadiyat","Fehmi-Quran","Tajweed"], marks:[43,43,40,44,20], maxTotal:250},
+
+// ===== 7th Class =====
+{c:"7th", n:"Kamran Mushtaq", p:"Mushtaq Ah. Khaja", sub:["Fehmi-Quran","Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[42,40,18,16,37], maxTotal:250},
+{c:"7th", n:"Hamid Naseer", p:"Naseer Ah. Khawaja", sub:["Fehmi-Quran","Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[12,40,48,29,15], maxTotal:250},
+{c:"7th", n:"Seerat Khursheed", p:"Khursheed Ah. Bhat", sub:["Fehmi-Quran","Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[45,48,46,39,37], maxTotal:250},
+{c:"7th", n:"Soliha Jan", p:"Fayaz Ah. Gojree", sub:["Fehmi-Quran","Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[47,47,48,39,39], maxTotal:250},
+{c:"7th", n:"Junaid-ul-Islam", p:"Shabir Ah. Hajam", sub:["Fehmi-Quran","Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[19,30,17,28,19], maxTotal:250},
+
+// ===== 8th Class =====
+{c:"8th", n:"Mariya Arif", p:"M. Arif Khan", sub:["Fahm-e-Quran","Fahm-e-Hadees"], marks:[47,49], maxTotal:100},
+
+// ===== 10th Class =====
+{c:"10th", n:"Faheem Sultan", p:"Md Sultan Khawaja", sub:["Fahm-e-Quran","Fahm-e-Hadees"], marks:[7,21], maxTotal:100},
+{c:"10th", n:"Murtaza Bashir", p:"Bashir Khawaja", sub:["Fahm-e-Quran","Fahm-e-Hadees"], marks:[20,26], maxTotal:100},
+{c:"10th", n:"Zuhaib Ah. Mir", p:"Bashir Ah. Mir", sub:["Fahm-e-Quran","Fahm-e-Hadees"], marks:[15,23], maxTotal:100}
 ];
 
-function findResult() {
-  const cls = document.getElementById('classSelect').value;
-  const sName = normalize(document.getElementById('studentName').value);
-  const pName = normalize(document.getElementById('parentName').value);
-  const output = document.getElementById('output');
+function findResult(){
+  const cls = document.getElementById("classSelect").value;
+  const sInput = normalize(document.getElementById("studentName").value);
+  const pInput = normalize(document.getElementById("parentName").value);
+  const out = document.getElementById("output");
+  out.innerHTML = "";
 
-  if(!cls || !sName) { alert("Details bharein!"); return; }
-
-  const student = results.find(r => r.c === cls && normalize(r.n) === sName && normalize(r.p) === pName);
-  
-  if(student) {
-      let total = student.marks.reduce((a, b) => a + b, 0);
-      let resHTML = `<h3>Result: ${student.n}</h3><table><tr><th>Subject</th><th>Marks</th></tr>`;
-      student.sub.forEach((s, i) => {
-          resHTML += `<tr><td>${s}</td><td>${student.marks[i]}</td></tr>`;
-      });
-      resHTML += `</table><p>Total: ${total}/${student.maxTotal}</p>`;
-      output.innerHTML = resHTML;
-  } else {
-      output.innerHTML = "<p style='color:red;'>Student Not Found!</p>";
+  if(!cls || !sInput || !pInput){
+      out.innerHTML = "<p style='color:red; text-align:center;'>Please fill all fields!</p>";
+      return;
   }
-}
-</script>
-</body>
-                            </html>
+
+  const filtered = results.filter(f => 
+      f.c === cls && normalize(f.n).includes(sInput) && normalize(f.p).includes(pInput)
+  );
+
+  if(filtered.length === 0){
+      out.innerHTML = "<p style='color:red; text-align:center;'>No record found. Check spellings!</p>";
+      return;
+  }
+
+  filtered.forEach(f => {
+      const total = f.marks.reduce((a, b) => a + (b > 0 ? b : 0), 0);
+      const percent = ((total / f.maxTotal) * 100).toFixed(2);
+      const status = percent >= 33 ? "<span class='pass'>PASS</span>" : "<span class='fail'>FAIL</span>";
+
+      let html = `<div class='student-info'><strong>Name:</strong> ${f.n} | <strong>Parent:</strong> ${f.p}</div>`;
+      html += `<table><t
