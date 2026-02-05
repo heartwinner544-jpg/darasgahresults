@@ -1,20 +1,76 @@
-<!
-// ========== 2nd Class ==========
-{c:"2nd",n:"Hashim Naseer",p:"Naseer Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[48,48],maxTotal:100},
-{c:"2nd",n:"Hyder Naseer",p:"Naseer Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[46,48],maxTotal:100},
-{c:"2nd",n:"Ayan Tariq",p:"Tariq Ah Lone",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[47,42],maxTotal:100},
-// (yahi tarah baki 2nd class ke saare students add karne hain)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darasgah Result Portal</title>
+<style>
+body{font-family:Arial,sans-serif;padding:20px;background:#f5f5f5;text-align:center;}
+.container{max-width:500px;margin:auto;background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
+h2{color:#2e6da4;}
+select,input,button{padding:10px;margin:10px 0;width:95%;border:1px solid #ccc;border-radius:5px;display:block;margin-left:auto;margin-right:auto;}
+button{background:#2e6da4;color:white;cursor:pointer;font-weight:bold;border:none;}
+#output{margin-top:20px;text-align:left;}
+table{width:100%;border-collapse:collapse;margin-top:10px;}
+th,td{border:1px solid #ccc;padding:8px;text-align:center;}
+th{background:#2e6da4;color:white;}
+.pass{color:green;font-weight:bold;}
+.fail{color:red;font-weight:bold;}
+</style>
+</head>
+<body>
 
-// ========== 3rd Class ==========
-{c:"3rd",n:"Ahtisham-ul-Haq",p:"Fayaz Ah Gojree",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[36,50],maxTotal:100},
-// (saare 3rd class ke students add karo)
+<div class="container">
+    <h2>Darasgah Result Portal</h2>
+    <p>Check Your Result</p>
+    
+    <select id="classSelect">
+      <option value="">Select Class</option>
+      <option>1st</option><option>2nd</option><option>3rd</option>
+      <option>4th</option><option>5th</option><option>6th</option>
+      <option>7th</option><option>8th</option><option>10th</option>
+    </select>
 
-// ========== 4th Class (4 subjects, 200 marks) ==========
-{c:"4th",n:"Aijaz Ah Mir",p:"Showket Ah Mir",sub:["Nazirah","Seerat","Mubadiyat","Tajweed"],marks:[34,48,48,47],maxTotal:200},
-// (saare 4th class students add karo)
+    <input type="text" id="studentName" placeholder="Student Name">
+    <input type="text" id="parentName" placeholder="Parent Name">
+    <button onclick="findResult()">Search Result</button>
 
-// ========== 5th Class (4 subjects, 200 marks) ==========
-{c:"5th",n:"Moeen ul Islam",p:"M. Shafi Malik",sub:["Nazirah","Seerat","Mubadiyat","Tajweed"],marks:[20,32,17,15],maxTotal:200},
-// (saare 5th class students add karo)
+    <div id="output"></div>
+</div>
 
-// ========== 6th Class (5 subjects,
+<script>
+function normalize(str){
+  return str ? str.toLowerCase().replace(/[^a-z]/g,"").trim() : "";
+}
+
+const results = [
+    {c:"1st", n:"Aisha Shabir", p:"Shabir Ah Mir", sub:["Nazirah","Seerat"], marks:[50,50], maxTotal:100},
+    {c:"1st", n:"Anam-ul-Haq", p:"Fayaz Ah Gojree", sub:["Nazirah","Seerat"], marks:[35,50], maxTotal:100},
+    {c:"4th", n:"Aijaz Ah Mir", p:"Showket Ah Mir", sub:["Nazirah","Seerat","Mubadiyat","Tajweed"], marks:[34,48,48,47], maxTotal:200}
+];
+
+function findResult() {
+  const cls = document.getElementById('classSelect').value;
+  const sName = normalize(document.getElementById('studentName').value);
+  const pName = normalize(document.getElementById('parentName').value);
+  const output = document.getElementById('output');
+
+  if(!cls || !sName) { alert("Details bharein!"); return; }
+
+  const student = results.find(r => r.c === cls && normalize(r.n) === sName && normalize(r.p) === pName);
+  
+  if(student) {
+      let total = student.marks.reduce((a, b) => a + b, 0);
+      let resHTML = `<h3>Result: ${student.n}</h3><table><tr><th>Subject</th><th>Marks</th></tr>`;
+      student.sub.forEach((s, i) => {
+          resHTML += `<tr><td>${s}</td><td>${student.marks[i]}</td></tr>`;
+      });
+      resHTML += `</table><p>Total: ${total}/${student.maxTotal}</p>`;
+      output.innerHTML = resHTML;
+  } else {
+      output.innerHTML = "<p style='color:red;'>Student Not Found!</p>";
+  }
+}
+</script>
+</body>
+                            </html>
