@@ -42,13 +42,15 @@
 <script>
 function smartClean(t) { return t ? t.toLowerCase().trim().replace(/\bmohammad\b|\bmohd\b|\bm\./g, "m").replace(/\babdul\b|\bab\./g, "ab").replace(/\bahmad\b|\bahmed\b|\bah\./g, "ah").replace(/[^a-z0-9]/g, "") : ""; }
 
+// SUBJECT LISTS
 const subjects1to3 = ["Nazirah + Tajweed", "Seerat + Mubadiyat"];
 const subjects4to5 = ["Nazirah", "Seerat", "Mubadiyat", "Tajveed"];
 const subjects6th = ["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"];
 const subjects7th = ["Fahm-e-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajweed"];
-    
+const subjectsSenior = ["Fahm-e-Quran", "Fahm-e-Hadees"];
+
 const students = [
-    // Sabhiconst subjects6to7 = ["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"]; Classes ka data yahan hai (Previous code se copy-pasted)
+    // CLASS 1st
     {c:"1st", n:"Aisha Shabir", p:"Shabir Ah Mir", m:[50, 50], t:100, max:100, sub:subjects1to3},
     {c:"1st", n:"Anam-ul-Haq", p:"Fayaz Ah Gojree", m:[35, 50], t:85, max:100, sub:subjects1to3},
     {c:"1st", n:"Irfan Arif", p:"M. Arif Khan", m:[20, 49], t:69, max:100, sub:subjects1to3},
@@ -166,31 +168,31 @@ const students = [
     {c:"5th", n:"Uzair Bilal", p:"Bilal Ah. Bhat", m:[38, 34, 20, 15], t:107, max:200, sub:subjects4to5},
 
     // CLASS 6th
-    {c:"6th", n:"Arhan Shafi Khawaja", p:"M. Shafi Khawaja", m:[28, 11, 18, 17, 5], t:79, max:250, sub:subjects6to7},
-    {c:"6th", n:"Moeen-ul-Islam", p:"Bashir Ah. Khawaja", m:[40, 35, 34, 12, 13], t:134, max:250, sub:subjects6to7},
-    {c:"6th", n:"Naushad Alam", p:"M. Sultan Khawaja", m:[29, 6, 18, 2, 4], t:59, max:250, sub:subjects6to7},
-    {c:"6th", n:"Amir Manzoor", p:"Manzoor Ah. Mir", m:[4, 4, 18, 5, 9], t:40, max:250, sub:subjects6to7},
-    {c:"6th", n:"Tazeem Bashir Mir", p:"Bashir Ah. Mir", m:[38, 12, 16, 10, 4], t:80, max:250, sub:subjects6to7},
-    {c:"6th", n:"Saifullah Mir", p:"Bashir Ah. Mir", m:[44, 14, 23, 23, 15], t:119, max:250, sub:subjects6to7},
-    {c:"6th", n:"Shahzad Parvaiz", p:"Parvaiz Ah. Bhat", m:[32, 44, 34, 41, 30], t:181, max:250, sub:subjects6to7},
-    {c:"6th", n:"Shahzab Shabir", p:"Shabir Ah. Para", m:[37, 40, 32, 35, 18], t:162, max:250, sub:subjects6to7},
-    {c:"6th", n:"Tabasum Nazir", p:"Nazir Ah Sheikh", m:[41, 44, 24, 28, 13], t:150, max:250, sub:subjects6to7},
-    {c:"6th", n:"Tahmuna Feroz", p:"Feroz Ah Lone", m:[43, 43, 40, 44, 20], t:190, max:250, sub:subjects6to7},
+    {c:"6th", n:"Arhan Shafi Khawaja", p:"M. Shafi Khawaja", m:[28, 11, 18, 17, 5], t:79, max:250, sub:subjects6th},
+    {c:"6th", n:"Moeen-ul-Islam", p:"Bashir Ah. Khawaja", m:[40, 35, 34, 12, 13], t:134, max:250, sub:subjects6th},
+    {c:"6th", n:"Naushad Alam", p:"M. Sultan Khawaja", m:[29, 6, 18, 2, 4], t:59, max:250, sub:subjects6th},
+    {c:"6th", n:"Amir Manzoor", p:"Manzoor Ah. Mir", m:[4, 4, 18, 5, 9], t:40, max:250, sub:subjects6th},
+    {c:"6th", n:"Tazeem Bashir Mir", p:"Bashir Ah. Mir", m:[38, 12, 16, 10, 4], t:80, max:250, sub:subjects6th},
+    {c:"6th", n:"Saifullah Mir", p:"Bashir Ah. Mir", m:[44, 14, 23, 23, 15], t:119, max:250, sub:subjects6th},
+    {c:"6th", n:"Shahzad Parvaiz", p:"Parvaiz Ah. Bhat", m:[32, 44, 34, 41, 30], t:181, max:250, sub:subjects6th},
+    {c:"6th", n:"Shahzab Shabir", p:"Shabir Ah. Para", m:[37, 40, 32, 35, 18], t:162, max:250, sub:subjects6th},
+    {c:"6th", n:"Tabasum Nazir", p:"Nazir Ah Sheikh", m:[41, 44, 24, 28, 13], t:150, max:250, sub:subjects6th},
+    {c:"6th", n:"Tahmuna Feroz", p:"Feroz Ah Lone", m:[43, 43, 40, 44, 20], t:190, max:250, sub:subjects6th},
 
-    // CLASS 7th
-    {c:"7th", n:"Kamran Mushtaq", p:"Mushtaq Ah. Khaja", m:[42, 40, 18, 16, 37], t:153, max:250, sub:subjects6to7},
-    {c:"7th", n:"Hamid Naseer", p:"Naseer Ah. Khawaja", m:[12, 40, 48, 29, 15], t:144, max:250, sub:subjects6to7},
-    {c:"7th", n:"Seerat Khursheed", p:"Khursheed Ah. Bhat", m:[45, 48, 46, 39, 37], t:215, max:250, sub:subjects6to7},
-    {c:"7th", n:"Soliha Jan", p:"Fayaz Ah. Gojree", m:[47, 47, 48, 39, 39], t:220, max:250, sub:subjects6to7},
-    {c:"7th", n:"Junaid-ul-Islam", p:"Shabir Ah. Hajam", m:[19, 30, 17, 28, 19], t:113, max:250, sub:subjects6to7},
+    // CLASS 7th (Subject sequence: Fahm-e-Quran, Nazirah, Seerat, Mubadiyat, Tajweed)
+    {c:"7th", n:"Kamran Mushtaq", p:"Mushtaq Ah. Khaja", m:[42, 40, 18, 16, 37], t:153, max:250, sub:subjects7th},
+    {c:"7th", n:"Hamid Naseer", p:"Naseer Ah. Khawaja", m:[12, 40, 48, 29, 15], t:144, max:250, sub:subjects7th},
+    {c:"7th", n:"Seerat Khursheed", p:"Khursheed Ah. Bhat", m:[45, 48, 46, 39, 37], t:215, max:250, sub:subjects7th},
+    {c:"7th", n:"Soliha Jan", p:"Fayaz Ah. Gojree", m:[47, 47, 48, 39, 39], t:220, max:250, sub:subjects7th},
+    {c:"7th", n:"Junaid-ul-Islam", p:"Shabir Ah. Hajam", m:[19, 30, 17, 28, 19], t:113, max:250, sub:subjects7th},
 
     // CLASS 8th
-    {c:"8th", n:"Mariya Arif", p:"M Arif khan", m:[47, 49], t:96, max:100, sub:["Fahm-e-Quran", "Fahm-e-Hadees"]},
+    {c:"8th", n:"Mariya Arif", p:"M Arif khan", m:[47, 49], t:96, max:100, sub:subjectsSenior},
 
     // CLASS 10th
-    {c:"10th", n:"Faheem Sultan", p:"Md Sultan Khawaja", m:[7, 21], t:28, max:100, sub:["Fahm-e-Quran", "Fahm-e-Hadees"]},
-    {c:"10th", n:"Murtaza Bashir", p:"Bashir Ah. Khawaja", m:[20, 26], t:46, max:100, sub:["Fahm-e-Quran", "Fahm-e-Hadees"]},
-    {c:"10th", n:"Zuhaib Ah. Mir", p:"Bashir Ah. Mir", m:[15, 23], t:38, max:100, sub:["Fahm-e-Quran", "Fahm-e-Hadees"]}
+    {c:"10th", n:"Faheem Sultan", p:"Md Sultan Khoja", m:[7, 21], t:28, max:100, sub:subjectsSenior},
+    {c:"10th", n:"Murtaza Bashir", p:"Bashir Ah. Khoja", m:[20, 26], t:46, max:100, sub:subjectsSenior},
+    {c:"10th", n:"Zuhaib Ah. Mir", p:"Bashir Ah. Mir", m:[15, 23], t:38, max:100, sub:subjectsSenior}
 ];
 
 function searchResult() {
@@ -203,7 +205,7 @@ function searchResult() {
     const found = students.find(s => s.c === selClass && smartClean(s.n).includes(smartClean(sInput)) && smartClean(s.p).includes(smartClean(pInput)));
 
     if(found) {
-        // FAIL Logic: Agar ek bhi subject mein marks 33% se kam hain (yaani 50 mein se 17)
+        // FAIL Logic: Agar ek bhi subject mein marks 17 se kam hain (out of 50)
         let isFailedInAny = found.m.some(mark => mark < 17);
         let finalStatus = isFailedInAny ? "<span style='color:red'>FAIL</span>" : "<span style='color:green'>PASSED</span>";
         
@@ -212,7 +214,10 @@ function searchResult() {
         out.innerHTML = `
             <div class="result-card">
                 <center><h3>ANNUAL RESULT 2026</h3></center>
-                <p><strong>Name:</strong> ${found.n.toUpperCase()} <br> <strong>Parentage:</strong> ${found.p.toUpperCase()} <br> <strong>Class:</strong> ${found.c} <br> <strong>Overall Status:</strong> ${finalStatus}</p>
+                <p><strong>Name:</strong> ${found.n.toUpperCase()} <br> 
+                   <strong>Parentage:</strong> ${found.p.toUpperCase()} <br> 
+                   <strong>Class:</strong> ${found.c} <br> 
+                   <strong>Overall Status:</strong> ${finalStatus}</p>
                 <table>
                     <tr><th>Subject</th><th>Marks Obtained</th></tr>
                     ${rows}
