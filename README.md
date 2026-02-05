@@ -45,42 +45,4 @@ th{background:#2e6da4;color:white;}
 <div id="output"></div>
 
 <script>
-// Normalize names (ignore dots, partials, caps)
-function normalize(str){
-  return str.toLowerCase().replace(/[^a-z]/g,"");
-}
-
-// ================= Complete Results Array 1st–10th =================
-const results = [
-// ========== 1st Class ==========
-{c:"1st",n:"Aisha Shabir",p:"Shabir Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[50,50],maxTotal:100},
-{c:"1st",n:"Anam-ul-Haq",p:"Fayaz Ah Gojree",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[35,50],maxTotal:100},
-{c:"1st",n:"Irfan Arif",p:"M. Arif Khan",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[20,49],maxTotal:100},
-{c:"1st",n:"Farhan Rasheed",p:"Ab Rasheed Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[49,35],maxTotal:100},
-{c:"1st",n:"Iram Mukhtiyar",p:"Mukhtiyar Ah Khan",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[32,48],maxTotal:100},
-{c:"1st",n:"Afan Ashraf",p:"M. Ashraf Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[47,28],maxTotal:100},
-{c:"1st",n:"Ab Wajid Bhat",p:"Towseef Ah Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[12,45],maxTotal:100},
-{c:"1st",n:"Usman Aijaz",p:"Aijaz Ah Khan",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[40,43],maxTotal:100},
-{c:"1st",n:"Kulsama Irshad",p:"Irshad Ah Bhat",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[39,45],maxTotal:100},
-{c:"1st",n:"Ayan Masood",p:"Masood Ah Mir",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[24,43],maxTotal:100},
-// (yahi tarah baki 1st class ke saare students add karne hain)
-
-// ========== 2nd Class ==========
-{c:"2nd",n:"Hashim Naseer",p:"Naseer Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[48,48],maxTotal:100},
-{c:"2nd",n:"Hyder Naseer",p:"Naseer Ah Khawaja",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[46,48],maxTotal:100},
-{c:"2nd",n:"Ayan Tariq",p:"Tariq Ah Lone",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[47,42],maxTotal:100},
-// (yahi tarah baki 2nd class ke saare students add karne hain)
-
-// ========== 3rd Class ==========
-{c:"3rd",n:"Ahtisham-ul-Haq",p:"Fayaz Ah Gojree",sub:["Nazirah Tajweed","Seerat Mubadiyat"],marks:[36,50],maxTotal:100},
-// (saare 3rd class ke students add karo)
-
-// ========== 4th Class (4 subjects, 200 marks) ==========
-{c:"4th",n:"Aijaz Ah Mir",p:"Showket Ah Mir",sub:["Nazirah","Seerat","Mubadiyat","Tajweed"],marks:[34,48,48,47],maxTotal:200},
-// (saare 4th class students add karo)
-
-// ========== 5th Class (4 subjects, 200 marks) ==========
-{c:"5th",n:"Moeen ul Islam",p:"M. Shafi Malik",sub:["Nazirah","Seerat","Mubadiyat","Tajweed"],marks:[20,32,17,15],maxTotal:200},
-// (saare 5th class students add karo)
-
-// ========== 6th Class (5 subjects,
+// Normalize names (ignore dots, 
