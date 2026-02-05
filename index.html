@@ -1,71 +1,62 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Darasgah Result Portal</title>
-<style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f0f4f8; text-align: center; color: #333; }
-    .container { max-width: 650px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-    h2 { color: #2e6da4; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-top: 0; }
-    .form-group { text-align: left; margin-bottom: 15px; }
-    label { font-weight: bold; display: block; margin-bottom: 5px; color: #555; }
-    input, select, button { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; outline: none; }
-    button { background: #2e6da4; color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-    button:hover { background: #1a4a73; }
-    #output { margin-top: 25px; }
-    .result-card { background: #fff; border: 2px solid #2e6da4; border-radius: 10px; padding: 20px; text-align: left; animation: slideIn 0.4s ease-out; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-    th { background: #f8f9fa; color: #2e6da4; }
-    .pass { color: green; font-weight: bold; }
-    .fail { color: red; font-weight: bold; }
-    @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darasgah Result Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f0f4f8; text-align: center; color: #333; }
+        .container { max-width: 650px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: #2e6da4; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .form-group { text-align: left; margin-bottom: 15px; }
+        input, select, button { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; margin-top: 5px; box-sizing: border-box; }
+        button { background: #2e6da4; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #1a4a73; }
+        .result-card { background: white; border: 2px solid #2e6da4; border-radius: 10px; padding: 20px; text-align: left; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        @media print { .no-print { display: none; } }
+    </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>Darasgah Result Portal</h2>
-    <div class="form-group">
-        <label>Select Class:</label>
-        <select id="classSelect">
-            <option value="">-- Choose Class --</option>
-            <option value="1st">Class 1st</option>
-            <option value="2nd">Class 2nd</option>
-            <option value="3rd">Class 3rd</option>
-            <option value="4th">Class 4th</option>
-            <option value="5th">Class 5th</option>
-            <option value="6th">Class 6th</option>
-            <option value="7th">Class 7th</option>
-            <option value="8th">Class 8th</option>
-            <option value="10th">Class 10th</option>
-        </select>
+    <div class="container">
+        <div class="no-print">
+            <h2>Darasgah Result Portal</h2>
+            <div class="form-group">
+                <label>Select Class:</label>
+                <select id="classSelect">
+                    <option value="1st">Class 1st</option>
+                    <option value="2nd">Class 2nd</option>
+                    <option value="3rd">Class 3rd</option>
+                    <option value="4th">Class 4th</option>
+                    <option value="5th">Class 5th</option>
+                    <option value="6th">Class 6th</option>
+                    <option value="7th">Class 7th</option>
+                    <option value="8th">Class 8th</option>
+                    <option value="10th">Class 10th</option>
+                </select>
+            </div>
+            <input type="text" id="sName" placeholder="Student Name (e.g. Aisha)">
+            <input type="text" id="pName" placeholder="Parent Name (e.g. Shabir)">
+            <button onclick="searchResult()">Get Result</button>
+        </div>
+        <div id="output"></div>
     </div>
-    <div class="form-group">
-        <label>Student Name:</label>
-        <input type="text" id="sName" placeholder="Enter student name">
-    </div>
-    <div class="form-group">
-        <label>Parent Name:</label>
-        <input type="text" id="pName" placeholder="Enter father name">
-    </div>
-    <button onclick="searchResult()">Get Result</button>
-    <div id="output"></div>
-</div>
 
 <script>
 function smartClean(text) {
     if (!text) return "";
     let t = text.toLowerCase().trim();
-    t = t.replace(/\bmohammad\b|\bmohammad\b|\bmohd\b|\bm\./g, "m");
+    t = t.replace(/\bmohammad\b|\bmohd\b|\bm\./g, "m");
     t = t.replace(/\babdul\b|\bab\./g, "ab");
     t = t.replace(/\bahmad\b|\bahmed\b|\bah\./g, "ah");
     return t.replace(/[^a-z0-9]/g, "");
 }
 
 const students = [
-    // --- CLASS 1st ---
+    // CLASS 1st
     {c:"1st", n:"Aisha Shabir", p:"Shabir Ah Mir", m:[50, 50], t:100, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"1st", n:"Anam-ul-Haq", p:"Fayaz Ah Gojree", m:[35, 50], t:85, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"1st", n:"Irfan Arif", p:"M. Arif Khan", m:[20, 49], t:69, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
@@ -92,10 +83,10 @@ const students = [
     {c:"1st", n:"Zehran Shafi", p:"M. Shafi Khawaja", m:[34, 32], t:66, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"1st", n:"Rutba Naseer", p:"Naseer Ah Mir", m:[37, 16], t:53, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"1st", n:"Sabat Sultan", p:"M. Sultan Malik", m:[31, 28], t:59, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
-    {c:"1st", n:"Musadiq Iqbal", p:"M. Iqbal Ganaie", m:["Ab", 15], t:15, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
+    {c:"1st", n:"Musadiq Iqbal", p:"M. Iqbal Ganaie", m:[0, 15], t:15, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"1st", n:"Mudasir Ah Bhat", p:"Gh. Mohd Bhat", m:[23, 18], t:41, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
 
-    // --- CLASS 2nd ---
+    // CLASS 2nd
     {c:"2nd", n:"Hashim Naseer", p:"Naseer Ah Khawaja", m:[48, 48], t:96, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"2nd", n:"Hyder Naseer", p:"Naseer Ah Khawaja", m:[46, 48], t:94, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"2nd", n:"Ayan Tariq", p:"Tariq Ah Lone", m:[47, 42], t:89, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
@@ -122,7 +113,7 @@ const students = [
     {c:"2nd", n:"Adeeba Khurshid", p:"Khurshid Ah Shaikh", m:[32, 35], t:67, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"2nd", n:"Ayan Majeed", p:"Ab Majeed Lone", m:[33, 15], t:48, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
 
-    // --- CLASS 3rd ---
+    // CLASS 3rd
     {c:"3rd", n:"Ahtisham-ul-Haq", p:"Fayaz Ah Gojree", m:[36, 50], t:86, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"3rd", n:"Fatima Feroz", p:"Feroz Ah Bhat", m:[37, 48], t:85, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"3rd", n:"Sabeena Jan", p:"M. Akbar Mir", m:[45, 40], t:85, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
@@ -143,7 +134,7 @@ const students = [
     {c:"3rd", n:"Saqib Shareef", p:"Shareef Din War", m:[35, 34], t:69, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
     {c:"3rd", n:"Murtaza Rasheed", p:"Ab Rasheed Malik", m:[23, 22], t:45, max:100, sub:["Nazirah", "Tajweed/Seerat/Mub"]},
 
-    // --- CLASS 4th ---
+    // CLASS 4th
     {c:"4th", n:"Aijaz Ah Mir", p:"Showket Ah Mir", m:[34, 48, 48, 47], t:177, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"4th", n:"Numa Khurshid", p:"Khurshid Ah Bhat", m:[39, 47, 46, 42], t:174, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"4th", n:"Tabinda Parvaiz", p:"Parvaiz Ah Bhat", m:[39, 50, 46, 35], t:170, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
@@ -160,7 +151,7 @@ const students = [
     {c:"4th", n:"Muneeb Rasool", p:"Gh Rasool War", m:[23, 18, 38, 9], t:88, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"4th", n:"Rahil Rasheed", p:"Ab Rasheed Malik", m:[38, 24, 25, 18], t:105, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
 
-    // --- CLASS 5th ---
+    // CLASS 5th
     {c:"5th", n:"Moeen ul Islam", p:"M. Shafi Malik", m:[20, 32, 17, 15], t:84, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"5th", n:"Aamir Akbar", p:"M. Akbar Mir", m:[33, 30, 29, 21], t:113, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"5th", n:"Usman Jameel", p:"Jameel Ah. Mir", m:[26, 32, 30, 17], t:105, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
@@ -182,7 +173,7 @@ const students = [
     {c:"5th", n:"Ayman Arif", p:"Aarif Hussain Khan", m:[41, 48, 45, 48], t:182, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"5th", n:"Uzair Bilal", p:"Bilal Ah. Bhat", m:[38, 34, 20, 15], t:107, max:200, sub:["Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
 
-    // --- CLASS 6th ---
+    // CLASS 6th
     {c:"6th", n:"Arhan Shafi Khawaja", p:"M. Shafi Khawaja", m:[28, 11, 18, 17, 5], t:79, max:250, sub:["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"]},
     {c:"6th", n:"Moeen-ul-Islam", p:"Bashir Ah. Khawaja", m:[40, 35, 34, 12, 13], t:134, max:250, sub:["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"]},
     {c:"6th", n:"Naushad Alam", p:"M. Sultan Khawaja", m:[29, 6, 18, 2, 4], t:59, max:250, sub:["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"]},
@@ -194,17 +185,17 @@ const students = [
     {c:"6th", n:"Tabasum Nazir", p:"Nazir Ah Sheikh", m:[41, 44, 24, 28, 13], t:150, max:250, sub:["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"]},
     {c:"6th", n:"Tahmuna Feroz", p:"Feroz Ah Lone", m:[43, 43, 40, 44, 20], t:190, max:250, sub:["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"]},
 
-    // --- CLASS 7th ---
+    // CLASS 7th
     {c:"7th", n:"Kamran Mushtaq", p:"Mushtaq Ah. Khaja", m:[42, 40, 18, 16, 37], t:153, max:250, sub:["Fehmi-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"7th", n:"Hamid Naseer", p:"Naseer Ah. Khawaja", m:[12, 40, 48, 29, 15], t:144, max:250, sub:["Fehmi-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"7th", n:"Seerat Khursheed", p:"Khursheed Ah. Bhat", m:[45, 48, 46, 39, 37], t:215, max:250, sub:["Fehmi-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"7th", n:"Soliha Jan", p:"Fayaz Ah. Gojree", m:[47, 47, 48, 39, 39], t:220, max:250, sub:["Fehmi-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
     {c:"7th", n:"Junaid-ul-Islam", p:"Shabir Ah. Hajam", m:[19, 30, 17, 28, 19], t:113, max:250, sub:["Fehmi-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajveed"]},
 
-    // --- CLASS 8th ---
+    // CLASS 8th
     {c:"8th", n:"Mariya Arif", p:"M Arif khan", m:[47, 49], t:96, max:100, sub:["Fahm-e-Quran", "Fahm-e-Hadees"]},
 
-    // --- CLASS 10th ---
+    // CLASS 10th
     {c:"10th", n:"Faheem Sultan", p:"Md Sultan Khoja", m:[7, 21], t:28, max:100, sub:["Fahm-e-Quran", "Fahm-e-Hadees"]},
     {c:"10th", n:"Murtaza Bashir", p:"Bashir Ah. Khoja", m:[20, 26], t:46, max:100, sub:["Fahm-e-Quran", "Fahm-e-Hadees"]},
     {c:"10th", n:"Zuhaib Ah. Mir", p:"Bashir Ah. Mir", m:[15, 23], t:38, max:100, sub:["Fahm-e-Quran", "Fahm-e-Hadees"]}
@@ -218,7 +209,7 @@ function searchResult() {
     out.innerHTML = "";
 
     if(!selClass || !sInput || !pInput) {
-        out.innerHTML = "<p style='color:red; font-weight:bold;'>Please enter all details!</p>";
+        out.innerHTML = "<p style='color:red; font-weight:bold;'>Meharbani karke details bharein!</p>";
         return;
     }
 
@@ -233,13 +224,11 @@ function searchResult() {
 
     if(found) {
         let status = found.t >= (found.max * 0.33) ? "<span class='pass'>PASSED</span>" : "<span class='fail'>PROMOTED</span>";
-        let marksRows = "";
-        found.sub.forEach((subject, index) => {
-            marksRows += `<tr><td>${subject}</td><td>${found.m[index]}</td></tr>`;
-        });
+        let marksRows = found.sub.map((subject, index) => `<tr><td>${subject}</td><td>${found.m[index]}</td></tr>`).join('');
 
         out.innerHTML = `
             <div class="result-card">
+                <center><h3>ANNUAL RESULT 2024</h3></center>
                 <p><strong>Name:</strong> ${found.n}</p>
                 <p><strong>Parentage:</strong> ${found.p}</p>
                 <p><strong>Class:</strong> ${found.c}</p>
@@ -249,10 +238,10 @@ function searchResult() {
                     ${marksRows}
                     <tr style="background:#eee"><td><strong>Total</strong></td><td><strong>${found.t}/${found.max}</strong></td></tr>
                 </table>
-            </div>
-        `;
+                <button class="no-print" style="background:#28a745; margin-top:15px;" onclick="window.print()">Print / Download PDF</button>
+            </div>`;
     } else {
-        out.innerHTML = "<p style='color:red; font-weight:bold;'>No result found. Please check spelling!</p>";
+        out.innerHTML = "<p style='color:red; font-weight:bold;'>Result nahi mila! Spelling check karein.</p>";
     }
 }
 </script>
