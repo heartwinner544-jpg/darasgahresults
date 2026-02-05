@@ -213,12 +213,18 @@ function searchResult() {
                     ${rows}
                     <tr style="background:#eee"><td><strong>Total</strong></td><td><strong>${found.t}/${found.max}</strong></td></tr>
                 </table>
-                <div class="signature-section">
-                    <div class="sig-container">
-                        <div class="sig-name">Aazad Sb</div>
-                        <div class="sig-line">Exm. Incharge</div>
+                                <div style="margin-top: 15px; display: flex; justify-content: flex-end; padding-right: 20px;">
+                    <div style="text-align: center; width: 140px;">
+                        <link href="https://fonts.googleapis.com/css2?family=Arizonia&display=swap" rel="stylesheet">
+                        <div style="font-family: 'Arizonia', cursive; font-size: 38px; color: #1a4a73; margin-bottom: -12px; transform: rotate(-2deg);">
+                            Aazad Sb
+                        </div>
+                        <div style="border-top: 1px solid #333; padding-top: 2px; font-weight: bold; font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Exm. Incharge
+                        </div>
                     </div>
                 </div>
+    
                 <button class="no-print" style="background:#28a745; margin-top:15px;" onclick="window.print()">Print / Download PDF</button>
             </div>`;
     } else { out.innerHTML = "<p style='color:red; font-weight:bold;'>Result nahi mila! Spelling check karein.</p>"; }
