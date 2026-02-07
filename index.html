@@ -3,196 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Darasgah Result Portal 2026</title>
+    <title>CQC Pandithpora - Result Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f0f4f8; text-align: center; color: #333; }
         .container { max-width: 650px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        h2 { color: #2e6da4; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .main-header { margin-bottom: 30px; border-bottom: 2px solid #2e6da4; padding-bottom: 10px; }
+        .main-header h1 { color: #1a4a73; margin: 0; font-size: 32px; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { color: #2e6da4; margin-bottom: 20px; font-size: 20px; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { font-weight: bold; font-size: 14px; color: #555; }
         input, select, button { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; margin-top: 5px; box-sizing: border-box; }
-        button { background: #2e6da4; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button { background: #2e6da4; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #1a4a73; }
         .result-card { background: white; border: 2px solid #2e6da4; border-radius: 10px; padding: 20px; text-align: left; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        .signature-section { margin-top: 20px; display: flex; justify-content: flex-end; padding-right: 5px; }
-        .sig-container { text-align: center; width: 110px; }
-        .sig-name { font-family: 'Sacramento', cursive; font-size: 24px; color: #1a4a73; margin-bottom: -12px; }
-        .sig-line { border-top: 1px solid #333; padding-top: 3px; font-weight: bold; font-size: 10px; color: #555; text-transform: uppercase; }
-        @media print { .no-print { display: none; } }
+        th { background-color: #f8f9fa; }
+        .signature-section { margin-top: 30px; display: flex; justify-content: flex-end; }
+        .sig-container { text-align: center; width: 120px; }
+        .sig-name { font-family: 'Sacramento', cursive; font-size: 26px; color: #1a4a73; margin-bottom: -10px; }
+        .sig-line { border-top: 2px solid #333; padding-top: 5px; font-weight: bold; font-size: 11px; color: #333; }
+        @media print { .no-print { display: none; } .container { box-shadow: none; border: none; width: 100%; } }
     </style>
 </head>
 <body>
+
     <div class="container">
+        <div class="main-header">
+            <h1>CQC PANDITHPORA</h1>
+        </div>
+
         <div class="no-print">
-            <h2>Darasgah Result Portal</h2>
-            <select id="classSelect">
-                <option value="1st">Class 1st</option><option value="2nd">Class 2nd</option>
-                <option value="3rd">Class 3rd</option><option value="4th">Class 4th</option>
-                <option value="5th">Class 5th</option><option value="6th">Class 6th</option>
-                <option value="7th">Class 7th</option><option value="8th">Class 8th</option>
-                <option value="10th">Class 10th</option>
-            </select>
-            <input type="text" id="sName" placeholder="Student Name">
-            <input type="text" id="pName" placeholder="Parent Name">
+            <h2>Annual Result Portal 2026</h2>
+            <div class="input-group">
+                <label>Select Class:</label>
+                <select id="classSelect">
+                    <option value="1st">Class 1st</option>
+                    <option value="2nd">Class 2nd</option>
+                    <option value="3rd">Class 3rd</option>
+                    <option value="4th">Class 4th</option>
+                    <option value="5th">Class 5th</option>
+                    <option value="6th">Class 6th</option>
+                    <option value="7th">Class 7th</option>
+                    <option value="8th">Class 8th</option>
+                    <option value="10th">Class 10th</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Student Name:</label>
+                <input type="text" id="sName" placeholder="Enter name">
+            </div>
+            <div class="input-group">
+                <label>Parent Name:</label>
+                <input type="text" id="pName" placeholder="Enter parentage">
+            </div>
             <button onclick="searchResult()">Get Result</button>
         </div>
+
         <div id="output"></div>
     </div>
 
 <script>
-function smartClean(t) { return t ? t.toLowerCase().trim().replace(/\bmohammad\b|\bmohd\b|\bm\./g, "m").replace(/\babdul\b|\bab\./g, "ab").replace(/\bahmad\b|\bahmed\b|\bah\./g, "ah").replace(/[^a-z0-9]/g, "") : ""; }
+function smartClean(t) { 
+    return t ? t.toLowerCase().trim()
+        .replace(/\bmohammad\b|\bmohd\b|\bm\./g, "m")
+        .replace(/\babdul\b|\bab\./g, "ab")
+        .replace(/\bahmad\b|\bahmed\b|\bah\./g, "ah")
+        .replace(/[^a-z0-9]/g, "") : ""; 
+}
 
-// SUBJECT LISTS
-const subjects1to3 = ["Nazirah + Tajweed", "Seerat + Mubadiyat"];
-const subjects4to5 = ["Nazirah", "Seerat", "Mubadiyat", "Tajveed"];
-const subjects6th = ["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"];
-const subjects7th = ["Fahm-e-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajweed"];
-const subjectsSenior = ["Fahm-e-Quran", "Fahm-e-Hadees"];
+// Subject Lists
+const sub1to3 = ["Nazirah + Tajweed", "Seerat + Mubadiyat"];
+const sub4th = ["Nazirah", "Seerat", "Mubadiyat", "Tajveed"];
+const sub5th = ["Nazirah", "Mubadiyat", "Seerat", "Tajveed"]; // Aapka desired sequence
+const sub6th = ["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"];
+const sub7th = ["Fahm-e-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajweed"];
+const subSenior = ["Fahm-e-Quran", "Fahm-e-Hadees"];
 
 const students = [
     // CLASS 1st
-    {c:"1st", n:"Aisha Shabir", p:"Shabir Ah Mir", m:[50, 50], t:100, max:100, sub:subjects1to3},
-    {c:"1st", n:"Anam-ul-Haq", p:"Fayaz Ah Gojree", m:[35, 50], t:85, max:100, sub:subjects1to3},
-    {c:"1st", n:"Irfan Arif", p:"M. Arif Khan", m:[20, 49], t:69, max:100, sub:subjects1to3},
-    {c:"1st", n:"Farhan Rasheed", p:"Ab Rasheed Mir", m:[49, 35], t:84, max:100, sub:subjects1to3},
-    {c:"1st", n:"Iram Mukhtiyar", p:"Mukhtiyar Ah Khan", m:[32, 48], t:80, max:100, sub:subjects1to3},
-    {c:"1st", n:"Afan Ashraf", p:"M. Ashraf Mir", m:[47, 28], t:75, max:100, sub:subjects1to3},
-    {c:"1st", n:"Ab Wajid Bhat", p:"Tawseef Ah Bhat", m:[12, 45], t:57, max:100, sub:subjects1to3},
-    {c:"1st", n:"Usman Aijaz", p:"Aijaz Ah Khan", m:[40, 43], t:83, max:100, sub:subjects1to3},
-    {c:"1st", n:"Kulsama Irshad", p:"Irshad Ah Bhat", m:[39, 45], t:84, max:100, sub:subjects1to3},
-    {c:"1st", n:"Ayan Masood", p:"Masood Ah Mir", m:[24, 43], t:67, max:100, sub:subjects1to3},
-    {c:"1st", n:"Mahnoor Qayoom", p:"Ab Qayoom Mir", m:[43, 33], t:76, max:100, sub:subjects1to3},
-    {c:"1st", n:"Zulkarnain Fayaz", p:"Fayaz Ah Lone", m:[41, 35], t:76, max:100, sub:subjects1to3},
-    {c:"1st", n:"Hazim Ishfaq", p:"Ishfaq Ah Peer", m:[42, 40], t:82, max:100, sub:subjects1to3},
-    {c:"1st", n:"Muntazir Tahir", p:"Tahir Manzoor Khawaja", m:[40, 35], t:75, max:100, sub:subjects1to3},
-    {c:"1st", n:"Ahmad Khawaja", p:"Naseer Ah Khawaja", m:[39, 34], t:73, max:100, sub:subjects1to3},
-    {c:"1st", n:"Naveed Naseer", p:"Naseer Ah Mir", m:[30, 29], t:59, max:100, sub:subjects1to3},
-    {c:"1st", n:"Abrar Jahangir", p:"Jahangir Ah Bhat", m:[35, 28], t:63, max:100, sub:subjects1to3},
-    {c:"1st", n:"Zayan Masood", p:"Masood Ah Mir", m:[33, 30], t:63, max:100, sub:subjects1to3},
-    {c:"1st", n:"Haidar Bilal", p:"Bilal Al Mir", m:[9, 33], t:42, max:100, sub:subjects1to3},
-    {c:"1st", n:"Ab Wahid", p:"Tawseef Al Bhat", m:[29, 25], t:54, max:100, sub:subjects1to3},
-    {c:"1st", n:"Muneeb Khawaja", p:"Javaid Ah Khawaja", m:[38, 35], t:73, max:100, sub:subjects1to3},
-    {c:"1st", n:"Azim Jameel", p:"Jameel Ah Mir", m:[17, 33], t:50, max:100, sub:subjects1to3},
-    {c:"1st", n:"Aman Sultan", p:"M. Sultan Khawaja", m:[21, 28], t:49, max:100, sub:subjects1to3},
-    {c:"1st", n:"Zehran Shafi", p:"M. Shafi Khawaja", m:[34, 32], t:66, max:100, sub:subjects1to3},
-    {c:"1st", n:"Rutba Naseer", p:"Naseer Ah Mir", m:[37, 16], t:53, max:100, sub:subjects1to3},
-    {c:"1st", n:"Sabat Sultan", p:"M. Sultan Malik", m:[31, 28], t:59, max:100, sub:subjects1to3},
-    {c:"1st", n:"Musadiq Iqbal", p:"M. Iqbal Ganaie", m:[0, 15], t:15, max:100, sub:subjects1to3},
-    {c:"1st", n:"Mudasir Ah Bhat", p:"Gh. Mohd Bhat", m:[23, 18], t:41, max:100, sub:subjects1to3},
+    {c:"1st", n:"Aisha Shabir", p:"Shabir Ah Mir", m:[50, 50], t:100, max:100, sub:sub1to3},
+    {c:"1st", n:"Anam-ul-Haq", p:"Fayaz Ah Gojree", m:[35, 50], t:85, max:100, sub:sub1to3},
+    {c:"1st", n:"Irfan Arif", p:"M. Arif Khan", m:[20, 49], t:69, max:100, sub:sub1to3},
+    {c:"1st", n:"Farhan Rasheed", p:"Ab Rasheed Mir", m:[49, 35], t:84, max:100, sub:sub1to3},
+    {c:"1st", n:"Iram Mukhtiyar", p:"Mukhtiyar Ah Khan", m:[32, 48], t:80, max:100, sub:sub1to3},
+    {c:"1st", n:"Afan Ashraf", p:"M. Ashraf Mir", m:[47, 28], t:75, max:100, sub:sub1to3},
+    {c:"1st", n:"Ab Wajid Bhat", p:"Tawseef Ah Bhat", m:[12, 45], t:57, max:100, sub:sub1to3},
+    {c:"1st", n:"Usman Aijaz", p:"Aijaz Ah Khan", m:[40, 43], t:83, max:100, sub:sub1to3},
+    {c:"1st", n:"Kulsama Irshad", p:"Irshad Ah Bhat", m:[39, 45], t:84, max:100, sub:sub1to3},
+    {c:"1st", n:"Ayan Masood", p:"Masood Ah Mir", m:[24, 43], t:67, max:100, sub:sub1to3},
+    {c:"1st", n:"Mahnoor Qayoom", p:"Ab Qayoom Mir", m:[43, 33], t:76, max:100, sub:sub1to3},
+    {c:"1st", n:"Zulkarnain Fayaz", p:"Fayaz Ah Lone", m:[41, 35], t:76, max:100, sub:sub1to3},
+    {c:"1st", n:"Hazim Ishfaq", p:"Ishfaq Ah Peer", m:[42, 40], t:82, max:100, sub:sub1to3},
+    {c:"1st", n:"Muntazir Tahir", p:"Tahir Manzoor Khawaja", m:[40, 35], t:75, max:100, sub:sub1to3},
+    {c:"1st", n:"Ahmad Khawaja", p:"Naseer Ah Khawaja", m:[39, 34], t:73, max:100, sub:sub1to3},
+    {c:"1st", n:"Naveed Naseer", p:"Naseer Ah Mir", m:[30, 29], t:59, max:100, sub:sub1to3},
+    {c:"1st", n:"Abrar Jahangir", p:"Jahangir Ah Bhat", m:[35, 28], t:63, max:100, sub:sub1to3},
+    {c:"1st", n:"Zayan Masood", p:"Masood Ah Mir", m:[33, 30], t:63, max:100, sub:sub1to3},
+    {c:"1st", n:"Haidar Bilal", p:"Bilal Al Mir", m:[9, 33], t:42, max:100, sub:sub1to3},
+    {c:"1st", n:"Ab Wahid", p:"Tawseef Al Bhat", m:[29, 25], t:54, max:100, sub:sub1to3},
+    {c:"1st", n:"Muneeb Khawaja", p:"Javaid Ah Khawaja", m:[38, 35], t:73, max:100, sub:sub1to3},
+    {c:"1st", n:"Azim Jameel", p:"Jameel Ah Mir", m:[17, 33], t:50, max:100, sub:sub1to3},
+    {c:"1st", n:"Aman Sultan", p:"M. Sultan Khawaja", m:[21, 28], t:49, max:100, sub:sub1to3},
+    {c:"1st", n:"Zehran Shafi", p:"M. Shafi Khawaja", m:[34, 32], t:66, max:100, sub:sub1to3},
+    {c:"1st", n:"Rutba Naseer", p:"Naseer Ah Mir", m:[37, 16], t:53, max:100, sub:sub1to3},
+    {c:"1st", n:"Sabat Sultan", p:"M. Sultan Malik", m:[31, 28], t:59, max:100, sub:sub1to3},
+    {c:"1st", n:"Musadiq Iqbal", p:"M. Iqbal Ganaie", m:[0, 15], t:15, max:100, sub:sub1to3},
+    {c:"1st", n:"Mudasir Ah Bhat", p:"Gh. Mohd Bhat", m:[23, 18], t:41, max:100, sub:sub1to3},
 
     // CLASS 2nd
-    {c:"2nd", n:"Hashim Naseer", p:"Naseer Ah Khawaja", m:[48, 48], t:96, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Hyder Naseer", p:"Naseer Ah Khawaja", m:[46, 48], t:94, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Ayan Tariq", p:"Tariq Ah Lone", m:[47, 42], t:89, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Muskan Jan", p:"Ab. Rashid Khawaja", m:[48, 40], t:88, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Seerat Shabir", p:"Shabir Ah Mir", m:[43, 45], t:88, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Abdullah Owais", p:"Owais Akbar Bhat", m:[43, 45], t:88, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Ayan Bilal Mir", p:"Bilal Ah Mir", m:[48, 38], t:86, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Muntazir Shafi", p:"M. Shafi Khawaja", m:[47, 38], t:85, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Ufan Jameel", p:"Jameel Ah Mir", m:[45, 40], t:85, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Muzamil Akbar", p:"M. Akbar Mir", m:[49, 35], t:84, max:100, sub:subjects1to3},
-    {c:"2nd", n:"M. Amad Mir", p:"Gh. Mohd. Mir", m:[48, 35], t:83, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Moeen-ul-Islam", p:"Feroz Ah Mir", m:[47, 36], t:83, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Afan Javaid", p:"Javaid Ah Khawaja", m:[48, 34], t:82, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Iram Zahoor", p:"Zahoor Ah Mir", m:[43, 38], t:81, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Atif Ah Shah", p:"Tahir Ah Shah", m:[46, 33], t:79, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Ab Hanan Mir", p:"M. Ashraf Mir", m:[44, 35], t:79, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Abroo Jan", p:"Khurshid Ah Bhat", m:[43, 35], t:78, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Momin Tahir", p:"Tahir Manzoor Khawaja", m:[39, 38], t:77, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Tazeem-ul-Haq", p:"M. Ashraf Malik", m:[40, 37], t:77, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Sikandar Sultan", p:"M. Sultan Malik", m:[46, 30], t:76, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Anzar Tahir", p:"Tahir Ah Shah", m:[41, 35], t:76, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Masrat Shafi", p:"M. Shafi Bhat", m:[36, 33], t:69, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Rabiya Naseer", p:"Naseer Ah Mir", m:[38, 30], t:68, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Adeeba Khurshid", p:"Khurshid Ah Shaikh", m:[32, 35], t:67, max:100, sub:subjects1to3},
-    {c:"2nd", n:"Ayan Majeed", p:"Ab Majeed Lone", m:[33, 15], t:48, max:100, sub:subjects1to3},
+    {c:"2nd", n:"Hashim Naseer", p:"Naseer Ah Khawaja", m:[48, 48], t:96, max:100, sub:sub1to3},
+    {c:"2nd", n:"Hyder Naseer", p:"Naseer Ah Khawaja", m:[46, 48], t:94, max:100, sub:sub1to3},
+    {c:"2nd", n:"Ayan Tariq", p:"Tariq Ah Lone", m:[47, 42], t:89, max:100, sub:sub1to3},
+    {c:"2nd", n:"Muskan Jan", p:"Ab. Rashid Khawaja", m:[48, 40], t:88, max:100, sub:sub1to3},
+    {c:"2nd", n:"Seerat Shabir", p:"Shabir Ah Mir", m:[43, 45], t:88, max:100, sub:sub1to3},
+    {c:"2nd", n:"Abdullah Owais", p:"Owais Akbar Bhat", m:[43, 45], t:88, max:100, sub:sub1to3},
+    {c:"2nd", n:"Ayan Bilal Mir", p:"Bilal Ah Mir", m:[48, 38], t:86, max:100, sub:sub1to3},
+    {c:"2nd", n:"Muntazir Shafi", p:"M. Shafi Khawaja", m:[47, 38], t:85, max:100, sub:sub1to3},
+    {c:"2nd", n:"Ufan Jameel", p:"Jameel Ah Mir", m:[45, 40], t:85, max:100, sub:sub1to3},
+    {c:"2nd", n:"Muzamil Akbar", p:"M. Akbar Mir", m:[49, 35], t:84, max:100, sub:sub1to3},
+    {c:"2nd", n:"M. Amad Mir", p:"Gh. Mohd. Mir", m:[48, 35], t:83, max:100, sub:sub1to3},
+    {c:"2nd", n:"Moeen-ul-Islam", p:"Feroz Ah Mir", m:[47, 36], t:83, max:100, sub:sub1to3},
+    {c:"2nd", n:"Afan Javaid", p:"Javaid Ah Khawaja", m:[48, 34], t:82, max:100, sub:sub1to3},
+    {c:"2nd", n:"Iram Zahoor", p:"Zahoor Ah Mir", m:[43, 38], t:81, max:100, sub:sub1to3},
+    {c:"2nd", n:"Atif Ah Shah", p:"Tahir Ah Shah", m:[46, 33], t:79, max:100, sub:sub1to3},
+    {c:"2nd", n:"Ab Hanan Mir", p:"M. Ashraf Mir", m:[44, 35], t:79, max:100, sub:sub1to3},
+    {c:"2nd", n:"Abroo Jan", p:"Khurshid Ah Bhat", m:[43, 35], t:78, max:100, sub:sub1to3},
+    {c:"2nd", n:"Momin Tahir", p:"Tahir Manzoor Khawaja", m:[39, 38], t:77, max:100, sub:sub1to3},
+    {c:"2nd", n:"Tazeem-ul-Haq", p:"M. Ashraf Malik", m:[40, 37], t:77, max:100, sub:sub1to3},
+    {c:"2nd", n:"Sikandar Sultan", p:"M. Sultan Malik", m:[46, 30], t:76, max:100, sub:sub1to3},
+    {c:"2nd", n:"Anzar Tahir", p:"Tahir Ah Shah", m:[41, 35], t:76, max:100, sub:sub1to3},
+    {c:"2nd", n:"Masrat Shafi", p:"M. Shafi Bhat", m:[36, 33], t:69, max:100, sub:sub1to3},
+    {c:"2nd", n:"Rabiya Naseer", p:"Naseer Ah Mir", m:[38, 30], t:68, max:100, sub:sub1to3},
+    {c:"2nd", n:"Adeeba Khurshid", p:"Khurshid Ah Shaikh", m:[32, 35], t:67, max:100, sub:sub1to3},
+    {c:"2nd", n:"Ayan Majeed", p:"Ab Majeed Lone", m:[33, 15], t:48, max:100, sub:sub1to3},
 
     // CLASS 3rd
-    {c:"3rd", n:"Ahtisham-ul-Haq", p:"Fayaz Ah Gojree", m:[36, 50], t:86, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Fatima Feroz", p:"Feroz Ah Bhat", m:[37, 48], t:85, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Sabeena Jan", p:"M. Akbar Mir", m:[45, 40], t:85, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Faiq-ul-Islam", p:"Parvaiz Ah Bhat", m:[36, 49], t:85, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Mehwish Tahir", p:"Tahir Manzoor Khawaja", m:[38, 44], t:82, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Inam-ul-Haq", p:"Aijaz Ah Mir", m:[36, 46], t:82, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Mohsin Mukhtar", p:"Mukhtar Ah Khan", m:[31, 47], t:78, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Aabish Basharat", p:"Basharat Ah Hajam", m:[34, 44], t:78, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Madiyah Majeed", p:"Ab Majeed Mir", m:[35, 34], t:69, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Azfar Rasheed", p:"Ab Rasheed Mir", m:[28, 39], t:67, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Shazaib Javaid", p:"Javaid Ah Shaikh", m:[26, 40], t:66, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Zahir Parvaiz", p:"Parvaiz Ah Khan", m:[28, 38], t:66, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Dawar Fayaz", p:"Fayaz Ah Lone", m:[29, 36], t:65, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Aban-ul-Haq", p:"Javaid Ah Bhat", m:[31, 31], t:62, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Aman-ul-Haq", p:"Bashir Ah Khawaja", m:[20, 32], t:52, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Basiya Zahoor", p:"Zahoor Ah Mir", m:[42, 40], t:82, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Zainab Arif", p:"M. Arif Khan", m:[36, 41], t:77, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Saqib Shareef", p:"Shareef Din War", m:[35, 34], t:69, max:100, sub:subjects1to3},
-    {c:"3rd", n:"Murtaza Rasheed", p:"Ab Rasheed Malik", m:[23, 22], t:45, max:100, sub:subjects1to3},
+    {c:"3rd", n:"Ahtisham-ul-Haq", p:"Fayaz Ah Gojree", m:[36, 50], t:86, max:100, sub:sub1to3},
+    {c:"3rd", n:"Fatima Feroz", p:"Feroz Ah Bhat", m:[37, 48], t:85, max:100, sub:sub1to3},
+    {c:"3rd", n:"Sabeena Jan", p:"M. Akbar Mir", m:[45, 40], t:85, max:100, sub:sub1to3},
+    {c:"3rd", n:"Faiq-ul-Islam", p:"Parvaiz Ah Bhat", m:[36, 49], t:85, max:100, sub:sub1to3},
+    {c:"3rd", n:"Mehwish Tahir", p:"Tahir Manzoor Khawaja", m:[38, 44], t:82, max:100, sub:sub1to3},
+    {c:"3rd", n:"Inam-ul-Haq", p:"Aijaz Ah Mir", m:[36, 46], t:82, max:100, sub:sub1to3},
+    {c:"3rd", n:"Mohsin Mukhtar", p:"Mukhtar Ah Khan", m:[31, 47], t:78, max:100, sub:sub1to3},
+    {c:"3rd", n:"Aabish Basharat", p:"Basharat Ah Hajam", m:[34, 44], t:78, max:100, sub:sub1to3},
+    {c:"3rd", n:"Madiyah Majeed", p:"Ab Majeed Mir", m:[35, 34], t:69, max:100, sub:sub1to3},
+    {c:"3rd", n:"Azfar Rasheed", p:"Ab Rasheed Mir", m:[28, 39], t:67, max:100, sub:sub1to3},
+    {c:"3rd", n:"Shazaib Javaid", p:"Javaid Ah Shaikh", m:[26, 40], t:66, max:100, sub:sub1to3},
+    {c:"3rd", n:"Zahir Parvaiz", p:"Parvaiz Ah Khan", m:[28, 38], t:66, max:100, sub:sub1to3},
+    {c:"3rd", n:"Dawar Fayaz", p:"Fayaz Ah Lone", m:[29, 36], t:65, max:100, sub:sub1to3},
+    {c:"3rd", n:"Aban-ul-Haq", p:"Javaid Ah Bhat", m:[31, 31], t:62, max:100, sub:sub1to3},
+    {c:"3rd", n:"Aman-ul-Haq", p:"Bashir Ah Khawaja", m:[20, 32], t:52, max:100, sub:sub1to3},
+    {c:"3rd", n:"Basiya Zahoor", p:"Zahoor Ah Mir", m:[42, 40], t:82, max:100, sub:sub1to3},
+    {c:"3rd", n:"Zainab Arif", p:"M. Arif Khan", m:[36, 41], t:77, max:100, sub:sub1to3},
+    {c:"3rd", n:"Saqib Shareef", p:"Shareef Din War", m:[35, 34], t:69, max:100, sub:sub1to3},
+    {c:"3rd", n:"Murtaza Rasheed", p:"Ab Rasheed Malik", m:[23, 22], t:45, max:100, sub:sub1to3},
 
     // CLASS 4th
-    {c:"4th", n:"Aijaz Ah Mir", p:"Showket Ah Mir", m:[34, 48, 48, 47], t:177, max:200, sub:subjects4to5},
-    {c:"4th", n:"Numa Khurshid", p:"Khurshid Ah Bhat", m:[39, 47, 46, 42], t:174, max:200, sub:subjects4to5},
-    {c:"4th", n:"Tabinda Parvaiz", p:"Parvaiz Ah Bhat", m:[39, 50, 46, 35], t:170, max:200, sub:subjects4to5},
-    {c:"4th", n:"Irtifa Ashiq", p:"Ashiq Hussain Bhat", m:[33, 50, 44, 43], t:170, max:200, sub:subjects4to5},
-    {c:"4th", n:"Imran Irshad", p:"Irshad Ah Bhat", m:[37, 50, 48, 28], t:163, max:200, sub:subjects4to5},
-    {c:"4th", n:"Umeed Basharat", p:"Bashir Ah Hajam", m:[42, 39, 44, 38], t:163, max:200, sub:subjects4to5},
-    {c:"4th", n:"Hazim Majeed", p:"Ab Majeed Lone", m:[34, 23, 42, 50], t:149, max:200, sub:subjects4to5},
-    {c:"4th", n:"Nelofar Shafi", p:"M. Shafi Bhat", m:[35, 42, 27, 44], t:148, max:200, sub:subjects4to5},
-    {c:"4th", n:"Nazima Irshad", p:"Irshad Ah Sheikh", m:[31, 37, 46, 31], t:145, max:200, sub:subjects4to5},
-    {c:"4th", n:"Shahid Rayees", p:"Rayees Ah Lone", m:[21, 23, 44, 33], t:121, max:200, sub:subjects4to5},
-    {c:"4th", n:"Huzaif Nabi", p:"Gh Nabi Mir", m:[30, 20, 38, 30], t:118, max:200, sub:subjects4to5},
-    {c:"4th", n:"Burhan Rasheed", p:"Ab Rasheed Mir", m:[29, 24, 23, 39], t:115, max:200, sub:subjects4to5},
-    {c:"4th", n:"Nadiya Mushtaq", p:"Mushtaq Ah Mir", m:[24, 10, 34, 30], t:98, max:200, sub:subjects4to5},
-    {c:"4th", n:"Muneeb Rasool", p:"Gh Rasool War", m:[23, 18, 38, 9], t:88, max:200, sub:subjects4to5},
-    {c:"4th", n:"Rahil Rasheed", p:"Ab Rasheed Malik", m:[38, 24, 25, 18], t:105, max:200, sub:subjects4to5},
+    {c:"4th", n:"Aijaz Ah Mir", p:"Showket Ah Mir", m:[34, 48, 48, 47], t:177, max:200, sub:sub4th},
+    {c:"4th", n:"Numa Khurshid", p:"Khurshid Ah Bhat", m:[39, 47, 46, 42], t:174, max:200, sub:sub4th},
+    {c:"4th", n:"Tabinda Parvaiz", p:"Parvaiz Ah Bhat", m:[39, 50, 46, 35], t:170, max:200, sub:sub4th},
+    {c:"4th", n:"Irtifa Ashiq", p:"Ashiq Hussain Bhat", m:[33, 50, 44, 43], t:170, max:200, sub:sub4th},
+    {c:"4th", n:"Imran Irshad", p:"Irshad Ah Bhat", m:[37, 50, 48, 28], t:163, max:200, sub:sub4th},
+    {c:"4th", n:"Umeed Basharat", p:"Bashir Ah Hajam", m:[42, 39, 44, 38], t:163, max:200, sub:sub4th},
+    {c:"4th", n:"Hazim Majeed", p:"Ab Majeed Lone", m:[34, 23, 42, 50], t:149, max:200, sub:sub4th},
+    {c:"4th", n:"Nelofar Shafi", p:"M. Shafi Bhat", m:[35, 42, 27, 44], t:148, max:200, sub:sub4th},
+    {c:"4th", n:"Nazima Irshad", p:"Irshad Ah Sheikh", m:[31, 37, 46, 31], t:145, max:200, sub:sub4th},
+    {c:"4th", n:"Shahid Rayees", p:"Rayees Ah Lone", m:[21, 23, 44, 33], t:121, max:200, sub:sub4th},
+    {c:"4th", n:"Huzaif Nabi", p:"Gh Nabi Mir", m:[30, 20, 38, 30], t:118, max:200, sub:sub4th},
+    {c:"4th", n:"Burhan Rasheed", p:"Ab Rasheed Mir", m:[29, 24, 23, 39], t:115, max:200, sub:sub4th},
+    {c:"4th", n:"Nadiya Mushtaq", p:"Mushtaq Ah Mir", m:[24, 10, 34, 30], t:98, max:200, sub:sub4th},
+    {c:"4th", n:"Muneeb Rasool", p:"Gh Rasool War", m:[23, 18, 38, 9], t:88, max:200, sub:sub4th},
+    {c:"4th", n:"Rahil Rasheed", p:"Ab Rasheed Malik", m:[38, 24, 25, 18], t:105, max:200, sub:sub4th},
 
     // CLASS 5th
-    {c:"5th", n:"Moeen ul Islam", p:"M. Shafi Malik", m:[20, 32, 17, 15], t:84, max:200, sub:subjects4to5},
-    {c:"5th", n:"Aamir Akbar", p:"M. Akbar Mir", m:[33, 30, 29, 21], t:113, max:200, sub:subjects4to5},
-    {c:"5th", n:"Usman Jameel", p:"Jameel Ah. Mir", m:[26, 32, 30, 17], t:105, max:200, sub:subjects4to5},
-    {c:"5th", n:"Khawaja Sohail", p:"M. Sultan Khawaja", m:[40, 44, 24, 10], t:118, max:200, sub:subjects4to5},
-    {c:"5th", n:"Adnan Mushtaq", p:"Mushtaq Ah. War", m:[37, 32, 23, 13], t:105, max:200, sub:subjects4to5},
-    {c:"5th", n:"Muqadas Majeed", p:"Ab. Majeed Mir", m:[35, 34, 20, 6], t:95, max:200, sub:subjects4to5},
-    {c:"5th", n:"Zeeshan Fayaz", p:"Fayaz Ah. Shaikh", m:[13, 22, 16, 21], t:72, max:200, sub:subjects4to5},
-    {c:"5th", n:"Kashiful Haq", p:"Javid Ah. Bhat", m:[23, 26, 14, 9], t:72, max:200, sub:subjects4to5},
-    {c:"5th", n:"Suhaib Shahzad", p:"Shahzad Ah. Lone", m:[38, 40, 25, 14], t:117, max:200, sub:subjects4to5},
-    {c:"5th", n:"Najmus Sehr", p:"Fayaz Ah. Malik", m:[42, 44, 48, 40], t:174, max:200, sub:subjects4to5},
-    {c:"5th", n:"Tajamul Islam", p:"Fayaz Ah. Malik", m:[43, 36, 46, 37], t:162, max:200, sub:subjects4to5},
-    {c:"5th", n:"Sadiya Jan", p:"Javid Ah. Bhat", m:[27, 28, 19, 15], t:89, max:200, sub:subjects4to5},
-    {c:"5th", n:"Sufiya Shabir", p:"Shabir Ah. Mir", m:[33, 38, 36, 29], t:136, max:200, sub:subjects4to5},
-    {c:"5th", n:"Sabia Shabir", p:"Shabir Ah. Mir", m:[46, 40, 41, 32], t:159, max:200, sub:subjects4to5},
-    {c:"5th", n:"Mohsin Manzoor", p:"Manzoor Ah. Mir", m:[16, 30, 14, 16], t:76, max:200, sub:subjects4to5},
-    {c:"5th", n:"Imran Farooq", p:"Farooq Ah. Sheikh", m:[37, 30, 21, 10], t:98, max:200, sub:subjects4to5},
-    {c:"5th", n:"Kamran Fayaz", p:"Fayaz Ah. Mir", m:[0, 14, 0, 4], t:18, max:200, sub:subjects4to5},
-    {c:"5th", n:"Faizan Manzoor", p:"Manzoor Ah. Bhat", m:[40, 34, 24, 25], t:123, max:200, sub:subjects4to5},
-    {c:"5th", n:"Ayman Arif", p:"Aarif Hussain Khan", m:[41, 48, 45, 48], t:182, max:200, sub:subjects4to5},
-    {c:"5th", n:"Uzair Bilal", p:"Bilal Ah. Bhat", m:[38, 34, 20, 15], t:107, max:200, sub:subjects4to5},
+    {c:"5th", n:"Najmus Sehr", p:"Fayaz Ah. Malik", m:[42, 44, 48, 40], t:174, max:200, sub:sub5th},
+    {c:"5th", n:"Tajamul Islam", p:"Fayaz Ah. Malik", m:[43, 36, 46, 37], t:162, max:200, sub:sub5th},
+    {c:"5th", n:"Ayman Arif", p:"Aarif Hussain Khan", m:[41, 48, 45, 48], t:182, max:200, sub:sub5th},
+    {c:"5th", n:"Moeen ul Islam", p:"M. Shafi Malik", m:[20, 32, 17, 15], t:84, max:200, sub:sub5th},
+    {c:"5th", n:"Aamir Akbar", p:"M. Akbar Mir", m:[33, 30, 29, 21], t:113, max:200, sub:sub5th},
+    {c:"5th", n:"Usman Jameel", p:"Jameel Ah. Mir", m:[26, 32, 30, 17], t:105, max:200, sub:sub5th},
+    {c:"5th", n:"Khawaja Sohail", p:"M. Sultan Khawaja", m:[40, 44, 24, 10], t:118, max:200, sub:sub5th},
+    {c:"5th", n:"Adnan Mushtaq", p:"Mushtaq Ah. War", m:[37, 32, 23, 13], t:105, max:200, sub:sub5th},
+    {c:"5th", n:"Muqadas Majeed", p:"Ab. Majeed Mir", m:[35, 34, 20, 6], t:95, max:200, sub:sub5th},
+    {c:"5th", n:"Zeeshan Fayaz", p:"Fayaz Ah. Shaikh", m:[13, 22, 16, 21], t:72, max:200, sub:sub5th},
+    {c:"5th", n:"Kashiful Haq", p:"Javid Ah. Bhat", m:[23, 26, 14, 9], t:72, max:200, sub:sub5th},
+    {c:"5th", n:"Suhaib Shahzad", p:"Shahzad Ah. Lone", m:[38, 40, 25, 14], t:117, max:200, sub:sub5th},
+    {c:"5th", n:"Sadiya Jan", p:"Javid Ah. Bhat", m:[27, 28, 19, 15], t:89, max:200, sub:sub5th},
+    {c:"5th", n:"Sufiya Shabir", p:"Shabir Ah. Mir", m:[33, 38, 36, 29], t:136, max:200, sub:sub5th},
+    {c:"5th", n:"Sobia Shabir", p:"Shabir Ah. Mir", m:[46, 40, 41, 32], t:159, max:200, sub:sub5th},
+    {c:"5th", n:"Mohsin Manzoor", p:"Manzoor Ah. Mir", m:[16, 30, 14, 16], t:76, max:200, sub:sub5th},
+    {c:"5th", n:"Imran Farooq", p:"Farooq Ah. Sheikh", m:[37, 30, 21, 10], t:98, max:200, sub:sub5th},
+    {c:"5th", n:"Kamran Fayaz", p:"Fayaz Ah. Mir", m:[0, 14, 0, 4], t:18, max:200, sub:sub5th},
+    {c:"5th", n:"Faizan Manzoor", p:"Manzoor Ah. Bhat", m:[40, 34, 24, 25], t:123, max:200, sub:sub5th},
+    {c:"5th", n:"Uzair Bilal", p:"Bilal Ah. Bhat", m:[38, 34, 20, 15], t:107, max:200, sub:sub5th},
 
     // CLASS 6th
-    {c:"6th", n:"Arhan Shafi Khawaja", p:"M. Shafi Khawaja", m:[28, 11, 18, 17, 5], t:79, max:250, sub:subjects6th},
-    {c:"6th", n:"Moeen-ul-Islam", p:"Bashir Ah. Khawaja", m:[40, 35, 34, 12, 13], t:134, max:250, sub:subjects6th},
-    {c:"6th", n:"Naushad Alam", p:"M. Sultan Khawaja", m:[29, 6, 18, 2, 4], t:59, max:250, sub:subjects6th},
-    {c:"6th", n:"Amir Manzoor", p:"Manzoor Ah. Mir", m:[4, 4, 18, 5, 9], t:40, max:250, sub:subjects6th},
-    {c:"6th", n:"Tazeem Bashir Mir", p:"Bashir Ah. Mir", m:[38, 12, 16, 10, 4], t:80, max:250, sub:subjects6th},
-    {c:"6th", n:"Saifullah Mir", p:"Bashir Ah. Mir", m:[44, 14, 23, 23, 15], t:119, max:250, sub:subjects6th},
-    {c:"6th", n:"Shahzad Parvaiz", p:"Parvaiz Ah. Bhat", m:[32, 44, 34, 41, 30], t:181, max:250, sub:subjects6th},
-    {c:"6th", n:"Shahzaib Shabir", p:"Shabir Ah. Para", m:[37, 40, 32, 35, 18], t:162, max:250, sub:subjects6th},
-    {c:"6th", n:"Tabasum Nazir", p:"Nazir Ah Sheikh", m:[41, 44, 24, 28, 13], t:150, max:250, sub:subjects6th},
-    {c:"6th", n:"Tahmina Feroz", p:"Feroz Ah Lone", m:[43, 43, 40, 44, 20], t:190, max:250, sub:subjects6th},
+    {c:"6th", n:"Arhan Shafi Khawaja", p:"M. Shafi Khawaja", m:[28, 11, 18, 17, 5], t:79, max:250, sub:sub6th},
+    {c:"6th", n:"Moeen-ul-Islam", p:"Bashir Ah. Khawaja", m:[40, 35, 34, 12, 13], t:134, max:250, sub:sub6th},
+    {c:"6th", n:"Naushad Alam", p:"M. Sultan Khawaja", m:[29, 6, 18, 2, 4], t:59, max:250, sub:sub6th},
+    {c:"6th", n:"Amir Manzoor", p:"Manzoor Ah. Mir", m:[4, 4, 18, 5, 9], t:40, max:250, sub:sub6th},
+    {c:"6th", n:"Tazeem Bashir Mir", p:"Bashir Ah. Mir", m:[38, 12, 16, 10, 4], t:80, max:250, sub:sub6th},
+    {c:"6th", n:"Saifullah Mir", p:"Bashir Ah. Mir", m:[44, 14, 23, 23, 15], t:119, max:250, sub:sub6th},
+    {c:"6th", n:"Shahzad Parvaiz", p:"Parvaiz Ah. Bhat", m:[32, 44, 34, 41, 30], t:181, max:250, sub:sub6th},
+    {c:"6th", n:"Shahzaib Shabir", p:"Shabir Ah. Para", m:[37, 40, 32, 35, 18], t:162, max:250, sub:sub6th},
+    {c:"6th", n:"Tabasum Nazir", p:"Nazir Ah Sheikh", m:[41, 44, 24, 28, 13], t:150, max:250, sub:sub6th},
+    {c:"6th", n:"Tahmina Feroz", p:"Feroz Ah Lone", m:[43, 43, 40, 44, 20], t:190, max:250, sub:sub6th},
 
-    // CLASS 7th (Subject sequence: Fahm-e-Quran, Nazirah, Seerat, Mubadiyat, Tajweed)
-    {c:"7th", n:"Kamran Mushtaq", p:"Mushtaq Ah. Khaja", m:[42, 40, 18, 16, 37], t:153, max:250, sub:subjects7th},
-    {c:"7th", n:"Hamid Naseer", p:"Naseer Ah. Khawaja", m:[12, 40, 48, 29, 15], t:144, max:250, sub:subjects7th},
-    {c:"7th", n:"Seerat Khursheed", p:"Khursheed Ah. Bhat", m:[45, 48, 46, 39, 37], t:215, max:250, sub:subjects7th},
-    {c:"7th", n:"Soliyah Jan", p:"Fayaz Ah. Gojree", m:[47, 47, 48, 39, 39], t:220, max:250, sub:subjects7th},
-    {c:"7th", n:"Junaid-ul-Islam", p:"Shabir Ah. Hajam", m:[19, 30, 17, 28, 19], t:113, max:250, sub:subjects7th},
+    // CLASS 7th
+    {c:"7th", n:"Kamran Mushtaq", p:"Mushtaq Ah. Khawaja", m:[42, 40, 18, 16, 37], t:153, max:250, sub:sub7th},
+    {c:"7th", n:"Hamid Naseer", p:"Naseer Ah. Khawaja", m:[12, 40, 48, 29, 15], t:144, max:250, sub:sub7th},
+    {c:"7th", n:"Seerat Khursheed", p:"Khursheed Ah. Bhat", m:[45, 48, 46, 39, 37], t:215, max:250, sub:sub7th},
+    {c:"7th", n:"Soliyah Jan", p:"Fayaz Ah. Gojree", m:[47, 47, 48, 39, 39], t:220, max:250, sub:sub7th},
+    {c:"7th", n:"Junaid-ul-Islam", p:"Shabir Ah. Hajam", m:[19, 30, 17, 28, 19], t:113, max:250, sub:sub7th},
 
     // CLASS 8th
-    {c:"8th", n:"Mariya Arif", p:"M Arif khan", m:[47, 49], t:96, max:100, sub:subjectsSenior},
+    {c:"8th", n:"Mariya Arif", p:"M Arif khan", m:[47, 49], t:96, max:100, sub:subSenior},
 
     // CLASS 10th
-    {c:"10th", n:"Faheem Sultan", p:"Md Sultan Khawaja", m:[7, 21], t:28, max:100, sub:subjectsSenior},
-    {c:"10th", n:"Murtaza Bashir", p:"Bashir Ah. Khawaja", m:[20, 26], t:46, max:100, sub:subjectsSenior},
-    {c:"10th", n:"Zuhaib Ah. Mir", p:"Bashir Ah. Mir", m:[15, 23], t:38, max:100, sub:subjectsSenior}
+    {c:"10th", n:"Faheem Sultan", p:"Md Sultan Khawaja", m:[7, 21], t:28, max:100, sub:subSenior},
+    {c:"10th", n:"Murtaza Bashir", p:"Bashir Ah. Khawaja", m:[20, 26], t:46, max:100, sub:subSenior},
+    {c:"10th", n:"Zuhaib Ah. Mir", p:"Bashir Ah. Mir", m:[15, 23], t:38, max:100, sub:subSenior}
 ];
 
 function searchResult() {
@@ -202,40 +234,48 @@ function searchResult() {
     const out = document.getElementById("output");
     out.innerHTML = "";
 
-    const found = students.find(s => s.c === selClass && smartClean(s.n).includes(smartClean(sInput)) && smartClean(s.p).includes(smartClean(pInput)));
+    if(!sInput || !pInput) {
+        out.innerHTML = "<p style='color:orange; font-weight:bold; margin-top:20px;'>Please fill both name fields.</p>";
+        return;
+    }
+
+    const found = students.find(s => 
+        s.c === selClass && 
+        smartClean(s.n).includes(smartClean(sInput)) && 
+        smartClean(s.p).includes(smartClean(pInput))
+    );
 
     if(found) {
-        // FAIL Logic: Agar ek bhi subject mein marks 17 se kam hain (out of 50)
         let isFailedInAny = found.m.some(mark => mark < 17);
         let finalStatus = isFailedInAny ? "<span style='color:red'>FAIL</span>" : "<span style='color:green'>PASSED</span>";
-        
         let rows = found.sub.map((sub, i) => `<tr><td>${sub}</td><td>${found.m[i]}</td></tr>`).join('');
         
         out.innerHTML = `
             <div class="result-card">
-                <center><h3>ANNUAL RESULT 2026</h3></center>
-                <p><strong>Name:</strong> ${found.n.toUpperCase()} <br> 
-                   <strong>Parentage:</strong> ${found.p.toUpperCase()} <br> 
-                   <strong>Class:</strong> ${found.c} <br> 
-                   <strong>Overall Status:</strong> ${finalStatus}</p>
+                <center>
+                    <h3 style="margin:0; color:#1a4a73;">CQC PANDITHPORA</h3>
+                    <p style="margin:5px 0 15px 0; font-size:12px; border-bottom:1px solid #ddd; padding-bottom:10px;">ANNUAL RESULT SLIP - 2026</p>
+                </center>
+                <p><strong>Student:</strong> ${found.n.toUpperCase()}</p>
+                <p><strong>Parentage:</strong> ${found.p.toUpperCase()}</p>
+                <p><strong>Class:</strong> ${found.c} &nbsp;&nbsp; | &nbsp;&nbsp; <strong>Status:</strong> ${finalStatus}</p>
                 <table>
-                    <tr><th>Subject</th><th>Marks Obtained</th></tr>
+                    <tr><th>Subject</th><th>Marks</th></tr>
                     ${rows}
-                    <tr style="background:#eee"><td><strong>Total</strong></td><td><strong>${found.t} / ${found.max}</strong></td></tr>
+                    <tr style="background:#f0f4f8; font-weight:bold;"><td>Grand Total</td><td>${found.t} / ${found.max}</td></tr>
                 </table>
                 <div class="signature-section">
                     <div class="sig-container">
                         <div class="sig-name">Aazad Sb</div>
-                        <div class="sig-line">Exm. Incharge</div>
+                        <div class="sig-line">Exam Incharge</div>
                     </div>
                 </div>
-                <button class="no-print" style="background:#28a745; margin-top:15px;" onclick="window.print()">Download Result (PDF)</button>
+                <button class="no-print" style="background:#28a745; margin-top:15px;" onclick="window.print()">Download/Print PDF</button>
             </div>`;
     } else { 
-        out.innerHTML = "<p style='color:red; font-weight:bold; margin-top:20px;'>Record not found! Please check the spellings.</p>"; 
+        out.innerHTML = "<p style='color:red; margin-top:20px;'>No record found. Please check names or class selection.</p>"; 
     }
 }
 </script>
 </body>
-    </html>
-    
+</html>
