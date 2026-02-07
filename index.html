@@ -73,13 +73,13 @@ function smartClean(t) {
         .replace(/[^a-z0-9]/g, "") : ""; 
 }
 
-// SUBJECT LISTS
-const subjects1to3 = ["Nazirah + Tajweed", "Seerat + Mubadiyat"];
-const subjects4 = ["Nazirah", "Seerat", "Mubadiyat", "Tajveed"];
-const subjects5 = ["Nazirah", "Mubadiyat", "Seerat", "Tajveed"];
-const subjects6th = ["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"];
-const subjects7th = ["Fahm-e-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajweed"];
-const subjectsSenior = ["Fahm-e-Quran", "Fahm-e-Hadees"];
+// FIX: Variable names matched with student data
+const sub1to3 = ["Nazirah + Tajweed", "Seerat + Mubadiyat"];
+const sub4th = ["Nazirah", "Seerat", "Mubadiyat", "Tajveed"];
+const sub5th = ["Nazirah", "Mubadiyat", "Seerat", "Tajveed"];
+const sub6th = ["Nazirah", "Seerat", "Mubadiyat", "Fehmi-Quran", "Tajveed"];
+const sub7th = ["Fahm-e-Quran", "Nazirah", "Seerat", "Mubadiyat", "Tajweed"];
+const subSenior = ["Fahm-e-Quran", "Fahm-e-Hadees"];
 
 const students = [
     // CLASS 1st
@@ -248,7 +248,12 @@ function searchResult() {
     if(found) {
         let isFailedInAny = found.m.some(mark => mark < 17);
         let finalStatus = isFailedInAny ? "<span style='color:red'>FAIL</span>" : "<span style='color:green'>PASSED</span>";
-        let rows = found.sub.map((sub, i) => `<tr><td>${sub}</td><td>${found.m[i]}</td></tr>`).join('');
+        
+        // Subject rows generation
+        let rows = "";
+        for (let i = 0; i < found.sub.length; i++) {
+            rows += `<tr><td>${found.sub[i]}</td><td>${found.m[i]}</td></tr>`;
+        }
         
         out.innerHTML = `
             <div class="result-card">
@@ -278,4 +283,5 @@ function searchResult() {
 }
 </script>
 </body>
-</html>
+    </html>
+    
